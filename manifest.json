@@ -1,0 +1,18 @@
+{
+  "name": "checkout",
+  "vendor": "coppelar",
+  "version": "3.0.0",
+  "title": "Checkout",
+  "description": "Checkout",
+  "mustUpdateAt": "2025-01-22",
+  "categories": [],
+  "dependencies": {
+    "vtex.checkout-graphql": "0.x",
+    "vtex.store": "2.x"
+  },
+  "builders": {
+    "react": "3.x",
+    "store": "0.x"
+  },
+  "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
+}

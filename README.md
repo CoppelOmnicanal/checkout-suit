@@ -1,1 +1,1 @@
-# CheckoutSuit# checkout-suit
+# checkout-suit

@@ -1,0 +1,20 @@
+{
+  "superior-checkout": {
+    "component": "Checkout"
+  },
+  "superior-checkout.default": {
+    "component": "Checkout"
+  },
+  "superior-payment": {
+    "component": "Payment"
+  },
+  "superior-payment.default": {
+    "component": "Payment"
+  },
+  "superior-finish": {
+    "component": "OrderPlaced"
+  },
+  "superior-finish.default": {
+    "component": "OrderPlaced"
+  }
+}

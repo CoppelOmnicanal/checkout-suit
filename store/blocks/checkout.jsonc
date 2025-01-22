@@ -1,0 +1,9 @@
+{
+    "superior-checkout.default#superior": {},
+    "store.orderplaced": {
+        "blocks": [
+            "superior-finish.default"
+        ],
+        "title": "Finalizar compra"
+    }
+}
