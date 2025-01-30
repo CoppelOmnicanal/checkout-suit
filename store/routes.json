@@ -1,6 +1,6 @@
 {
   "superior-checkout.default": {
-    "path": "/checkout",
+    "path": "/superiorcheckout",
     "title": "Checkout | Coppel.com.ar"
   },
   "superior-payment.default": {
