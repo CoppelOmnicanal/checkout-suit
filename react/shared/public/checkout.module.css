@@ -1,0 +1,43 @@
+.sc-section {
+  width: 100%;
+  display: flex;
+}
+
+.sc-responsive-container {
+  margin: auto;
+  height: 100%;
+  width: 100%;
+  padding: 0 1rem !important;
+}
+
+@media (min-width: 576px) {
+  .sc-responsive-container {
+    width: 540px;
+    max-width: 540px;
+    padding: 0 0 !important;
+  }
+}
+@media (min-width: 768px) {
+  .sc-responsive-container {
+    width: 720px;
+    max-width: 720px;
+  }
+}
+@media (min-width: 992px) {
+  .sc-responsive-container {
+    width: 960px;
+    max-width: 960px;
+  }
+}
+
+.h3 {
+    font-family: 'Circular', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.75rem;
+    min-height: 1.75rem;
+    height: fit-content;
+    font-weight: bold;
+    margin: 0;
+    width: 100%;
+    letter-spacing: 0.9px;
+  }

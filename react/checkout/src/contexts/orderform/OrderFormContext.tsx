@@ -1,3 +1,9 @@
-import { createContext } from "react";
+import { createContext } from 'react'
+import { OrderForm } from '../../../../shared/types/orderform.types'
 
-export const OrderFormContext = createContext<any>({})
+export interface OrderFormContextType {
+  orderForm: OrderForm | undefined
+  orderFormLoading: boolean
+}
+
+export const OrderFormContext = createContext<OrderFormContextType>({ orderFormLoading: false, orderForm: undefined })
