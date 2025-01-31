@@ -4,7 +4,7 @@ import { Checkout } from './src/Checkout'
 export const App = () => {
   const [emarsys, setEmarsys] = useState(false)
   const [vtex, setVtex] = useState(false)
-  const isReady = useMemo(() => (vtex && emarsys), [vtex, emarsys])
+  const isReady = useMemo(() => vtex && emarsys, [vtex, emarsys])
 
   useEffect(() => {
     console.log(`🤖Superior Checkout Release 3.0.0`)

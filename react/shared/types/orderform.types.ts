@@ -36,6 +36,10 @@ export interface OrderForm {
   itemsOrdination: null
 }
 
+export interface UserDevice {
+  platform: string,
+}
+
 export interface ClientPreferencesData {
   locale: string
   optinNewsLetter: null

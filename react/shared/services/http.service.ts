@@ -26,4 +26,14 @@ export class HttpMethods {
       throw new Error('Unexpected Error')
     }
   }
+
+  async put<T, K>(endpoint: string, body: K): Promise<T> {
+    try {
+      console.log("🚀 ~ HttpMethods ~ body:", body)
+      const response: AxiosResponse<T> = await axios.put(this.url + endpoint, body)
+      return response.data
+    } catch (error) {
+      throw new Error('Unexpected Error')
+    }
+  }
 }
