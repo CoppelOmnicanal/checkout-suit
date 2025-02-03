@@ -1,0 +1,66 @@
+@font-face {
+  font-family: 'HelveticaNeue';
+  src: url('./fonts/HelveticaNeue.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'HelveticaNeue-Bold';
+  src: url('./fonts/HelveticaNeueBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Circular';
+  src: url('./fonts/CircularStd-Book.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Circular-Bold';
+  src: url('./fonts/CircularStd-Bold.ttf') format('truetype');
+}
+
+:root {
+  --azul-50: #fafbfc;
+  --azul-100: #f1f4fa;
+  --azul-150: #d9e3f2;
+  --azul-200: #a1b8de;
+  --azul-300: #006fb9;
+  --azul-400: #145b97;
+  --azul-500: #194b7b;
+  --azul-600: #103151;
+  --amarillo-100: #fff9e0;
+  --amarillo-200: #ffec99;
+  --amarillo-300: #ffdd35;
+  --amarillo-400: #d3b318;
+  --amarillo-500: #847220;
+  --rojo-0: #d3273e;
+  --aprobacion-100: #e5ffeb;
+  --aprobacion-400: #2e8241;
+  --error-100: #fff0ef;
+  --error-300: #f44336;
+  --error-400: #ba4b44;
+  --precaucion-100: #fff4e8;
+  --precaucion-400: #ab5c00;
+  --informacion-100: #e4f7ff;
+  --informacion-400: #0076a9;
+  --visitado: #5548e9;
+  --blanco-0: #fff;
+  --gris-100: #eeeded;
+  --gris-200: #bebebd;
+  --gris-300: #9b9a98;
+  --gris-400: #777673;
+  --gris-500: #595955;
+  --gris-600: #3b3a37;
+  --gris-700: #1b1a16;
+  --negro-0: #000;
+  --overlay: hsla(0, 0%, 100%, 0.01);
+  --transparente: hsla(0, 0%, 100%, 0.01);
+  --min-desktop-width: 768px;
+  --border-radius-chico: 8px;
+  --border-radius-grande: 16px;
+  --border-radius-full: 100px;
+  --border-simple: 1px solid var(--azul-100);
+  --max-big: 1536px;
+  --max-desktop: 1280px;
+  --max-laptop: 1024px;
+  --max-tablet: 768px;
+}

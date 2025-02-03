@@ -1,5 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Checkout } from './src/Checkout'
+import '../shared/public/global.css'
+import { Header } from '../shared/components'
+import { Footer } from '../shared/components/footer/Footer'
 
 export const App = () => {
   const [emarsys, setEmarsys] = useState(false)
@@ -43,7 +46,7 @@ export const App = () => {
       document.body.appendChild(vtexjs)
     }
 
-    jqueryjs.onerror = () => console.error('Error al cargar VTEX.js')
+    jqueryjs.onerror = () => console.error('Error al cargar JQUERY.js')
 
     document.body.appendChild(emarsys)
     document.body.appendChild(googleFrame)
@@ -57,5 +60,14 @@ export const App = () => {
     }
   }, [])
 
-  return isReady ? <Checkout /> : <div>Cargando...</div>
+  return (
+    <>
+      <div>
+        <div id="backdrop"></div>
+        <Header />
+        {isReady ? <Checkout /> : 'Cargando...'}
+        <Footer />
+      </div>
+    </>
+  )
 }

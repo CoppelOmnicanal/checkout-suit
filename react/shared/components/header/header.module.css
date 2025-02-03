@@ -1,0 +1,78 @@
+/*HEADER*/
+.header {
+  height: 4rem;
+  min-height: 4rem;
+  max-height: 4rem;
+  background-color: var(--azul-300);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.header-logo {
+  width: 9rem;
+  display: flex;
+  position: relative;
+}
+
+.header-logo:after {
+  content: '';
+  display: block;
+  padding-bottom: 20.61%;
+}
+
+.header-logo > * {
+  position: absolute;
+}
+
+.header-logo-img {
+  max-height: 100%;
+  max-width: 100%;
+  margin: auto;
+}
+
+.header-padlock {
+  margin-left: auto;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.padlock-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.padlock-icon > svg {
+  fill: white;
+  width: 1.5rem;
+  height: fit-content;
+}
+
+.padlock-text {
+  margin-top: 0.25rem;
+  white-space: nowrap;
+}
+
+div#change-visibility {
+  cursor: pointer;
+}
+
+.caption-small {
+  font-family: 'HelveticaNeue', sans-serif;
+  font-size: 0.625rem;
+  line-height: 0.75rem;
+  min-height: 0.75rem;
+  height: fit-content;
+  margin: 0;
+  width: 100%;
+  letter-spacing: 0.9px;
+}
