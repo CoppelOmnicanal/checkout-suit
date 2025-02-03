@@ -4,19 +4,20 @@ import { OrderFormContext, OrderFormContextType } from './OrderFormContext'
 import { useQuery } from '@tanstack/react-query'
 import { OrderFormApi } from '../../api/orderform.api'
 import { HttpMethods } from '../../../../shared/services/http.service'
-//@ts-ignore
 import { CHO_VERSION } from '../../../../shared/types/shared.types'
+import { useSaveCustomData } from '../../mutations/useSaveCustomData'
 
 const OrderFormProvider: SingleProvider = ({ children }) => {
   const http = new HttpMethods('/api/checkout/pub/orderForm/')
   const orderFormService = new OrderFormApi(http)
+  const saveCustomData = useSaveCustomData(orderFormService)
+  //@ts-ignore
   const { data: orderForm, error, isLoading } = useQuery(['orderForm'], () => orderFormService.getUpdatedOrderForm())
   const isFirstUpdate = useRef(true)
 
   useEffect(() => {
     if (orderForm && isFirstUpdate.current) {
       isFirstUpdate.current = false
-      console.log('🚀 Primera actualización del orderForm:', orderForm)
       const device = {
         platform: navigator.platform,
         agents:
@@ -26,19 +27,11 @@ const OrderFormProvider: SingleProvider = ({ children }) => {
       }
 
       if (!!orderForm?.orderFormId) {
-        orderFormService.saveCustomData(JSON.stringify(device, null, 2), orderForm.orderFormId, 'device')
-        orderFormService.saveCustomData(CHO_VERSION, orderForm.orderFormId, 'version')
+        saveCustomData({ data: JSON.stringify(device, null, 2), orderFormId: orderForm.orderFormId, fieldName: 'device' })
+        saveCustomData({ data: CHO_VERSION, orderFormId: orderForm.orderFormId, fieldName: 'version' })
       }
     }
   }, [orderForm])
-
-  useEffect(() => {
-    console.log('🚀 ~ isLoading:', isLoading)
-  }, [isLoading])
-
-  useEffect(() => {
-    console.log('🚀 ~ error:', error)
-  }, [error])
 
   const data: OrderFormContextType = {
     orderForm,

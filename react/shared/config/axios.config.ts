@@ -20,7 +20,6 @@ axiosWrapper.interceptors.request.use(
 
 axiosWrapper.interceptors.response.use(
   (response: AxiosResponse) => {
-    console.log('Response Interceptor:', response)
     return response
   },
   (error: AxiosError) => {

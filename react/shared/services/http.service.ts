@@ -29,10 +29,10 @@ export class HttpMethods {
 
   async put<T, K>(endpoint: string, body: K): Promise<T> {
     try {
-      console.log("🚀 ~ HttpMethods ~ body:", body)
       const response: AxiosResponse<T> = await axios.put(this.url + endpoint, body)
       return response.data
     } catch (error) {
+      console.log("🚀 ~ HttpMethods ~ error:", error)
       throw new Error('Unexpected Error')
     }
   }

@@ -37,7 +37,7 @@ export interface OrderForm {
 }
 
 export interface UserDevice {
-  platform: string,
+  platform: string
 }
 
 export interface ClientPreferencesData {

@@ -4,6 +4,8 @@ import { useRuntime } from 'vtex.render-runtime'
 import { CartPage, CheckoutPage } from './pages'
 import { Hashes } from '../../shared/types/shared.types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { EventsContainer } from './components/EventsContainer'
+import { AuthProvider } from '../../shared/contexts/auth/AuthProvider'
 const queryClient = new QueryClient()
 
 export const Checkout = () => {
@@ -25,7 +27,11 @@ export const Checkout = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <OrderFormProvider>{render[hash]}</OrderFormProvider>
+      <OrderFormProvider>
+        <AuthProvider>
+          <EventsContainer>{render[hash]}</EventsContainer>
+        </AuthProvider>
+      </OrderFormProvider>
     </QueryClientProvider>
   )
 }

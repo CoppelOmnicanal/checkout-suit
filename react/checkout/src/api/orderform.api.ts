@@ -15,6 +15,7 @@ export class OrderFormApi {
 
   async saveCustomData(data: string, orderFormId: string, fieldName: string) {
     const url = `${orderFormId}/customData/superiorcheckout/${fieldName}`
-    await this.http.put(url, data)
+    const orderForm = await this.http.put<OrderForm, string>(url, JSON.stringify({ value: data }))
+    return orderForm
   }
 }
