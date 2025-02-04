@@ -2,11 +2,9 @@ import React, { useEffect, useMemo } from 'react'
 import { useOrderForm } from '../../../contexts/orderform'
 import { useStepper } from '../../../contexts/stepper'
 import { CheckoutSteps, StepsStates } from '../../../types/stepper.types'
-//@ts-ignore
 import { ProfileDone, ProfileOpen } from './'
 import checkout from '../../../../../shared/public/checkout.module.css'
-import { ClosedStep } from '../../../components/closed-step'
-import closedStep from '../../../components/closed-step/closedstep.module.css'
+import { StepHeader } from '../../../components/step-header'
 
 export const ProfileContainer = () => {
   const { orderForm } = useOrderForm()
@@ -16,7 +14,7 @@ export const ProfileContainer = () => {
 
   const editStep = () => {}
 
-  const { setSteps } = useStepper()
+  const { steps, setSteps } = useStepper()
   const { clientProfileData } = orderForm
   const isCompleted = useMemo(() => {
     const { documentType, stateInscription, corporatePhone, profileCompleteOnLoading, profileErrorOnLoading, customerClass, tradeName, ...requiredData } =
@@ -42,13 +40,13 @@ export const ProfileContainer = () => {
   return (
     <div id={CheckoutSteps.PROFILE.substring(1)}>
       <div className={`${checkout['subtitle-1']}`}>Información personal</div>
-      <div className={closedStep['container']}>
-        <ClosedStep editStep={editStep} text="Completa tus datos para confirmar tu identidad" state={isCompleted ? StepsStates.DONE : StepsStates.OPEN} step={1} />
-        {/* 
-        {isCompleted && <ProfileDone />}
+      <StepHeader editStep={editStep} state={isCompleted ? StepsStates.DONE : StepsStates.OPEN}>
+
+        {!steps[CheckoutSteps.PROFILE] && <p className={checkout['text-secondary']}>Completa tus datos para confirmar tu identidad</p>}
+        {isCompleted && <ProfileDone clientProfileData={clientProfileData} />}
         {!isCompleted && <ProfileOpen />}
-        */}
-      </div>
+
+      </StepHeader>
     </div>
   )
 }
