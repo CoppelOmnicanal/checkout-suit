@@ -7,7 +7,7 @@ import { Cart, CartEmpty } from './components'
 export const CartPage = () => {
   const { orderFormLoading, orderForm } = useOrderForm()
 
-  if (orderFormLoading && (!orderForm?.items?.length || orderForm.items.length < 1)) {
+  if (orderFormLoading) {
     return <div>Cargando CartPage...</div>
   }
 

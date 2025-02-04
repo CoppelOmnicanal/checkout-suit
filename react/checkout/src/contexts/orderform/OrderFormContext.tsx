@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { OrderForm } from '../../../../shared/types/orderform.types'
+import { OrderForm } from '../../types/orderform.types'
 
 export interface OrderFormContextType {
   orderForm: OrderForm | undefined

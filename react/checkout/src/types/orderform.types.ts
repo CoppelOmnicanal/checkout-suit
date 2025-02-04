@@ -52,9 +52,9 @@ export interface ClientProfileData {
   document: string
   documentType: null
   phone: string
-  corporateName: null
+  corporateName?: string
   tradeName: null
-  corporateDocument: null
+  corporateDocument?: string
   stateInscription: null
   corporatePhone: null
   isCorporate: boolean

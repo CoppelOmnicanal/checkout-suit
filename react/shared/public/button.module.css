@@ -1,0 +1,142 @@
+
+.boton {
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+    text-decoration: none;
+    overflow: hidden;
+  }
+  
+  .boton .icon {
+    display: flex;
+  }
+  
+  .boton.error {
+    background-color: var(--error-400);
+    color: var(--blanco-0);
+  }
+  
+  .boton.primario,
+  .boton.error,
+  .boton.success {
+    background-color: var(--azul-300);
+    color: var(--blanco-0);
+    border-color: 1px solid var(--azul-300);
+  }
+  
+  .boton.primario.disabled {
+    background-color: var(--azul-200) !important;
+    border-color: 1px solid var(--azul-200) !important;
+  }
+  
+  .boton.primario:hover {
+    background-color: var(--azul-400);
+    border-color: 1px solid var(--azul-400);
+  }
+  
+  .boton.primario:active {
+    background-color: var(--azul-500);
+    border-color: 1px solid var(--azul-500);
+  }
+  
+  .boton.secundario {
+    background-color: var(--transparente);
+    color: var(--azul-300);
+    border: 1px solid var(--azul-300);
+  }
+  
+  .boton.secundario.disabled {
+    color: var(--azul-200) !important;
+    border: 1px solid var(--azul-200) !important;
+  }
+  
+  .boton.secundario:hover {
+    background-color: var(--azul-100);
+    color: var(--azul-400);
+    border: 1px solid var(--azul-400);
+  }
+  
+  .boton.secundario:active {
+    background-color: var(--azul-150);
+    color: var(--azul-500);
+    border: 1px solid var(--azul-500);
+  }
+  
+  .boton.terciario {
+    background-color: var(--transparente) !important;
+    color: var(--azul-300);
+    border: 1px solid var(--transparente) !important;
+  }
+  
+  .boton.terciario .icon svg {
+    min-width: 1.5rem;
+    width: 1.5rem;
+    fill: var(--azul-300);
+  }
+  
+  .boton.terciario:hover .icon svg {
+    min-width: 1.5rem;
+    width: 1.5rem;
+    fill: var(--azul-400);
+  }
+  
+  .boton.terciario.disabled {
+    color: var(--azul-200);
+  }
+  
+  .boton.terciario.disabled:hover {
+    background-color: transparent;
+    color: var(--azul-200);
+  }
+  
+  .boton.terciario:hover {
+    background-color: var(--azul-100);
+    color: var(--azul-400);
+  }
+  
+  .boton.terciario:active {
+    background-color: var(--azul-150);
+    color: var(--azul-500);
+  }
+  
+  .boton.pequenio {
+    height: 38px;
+    min-width: 80px;
+    width: fit-content;
+    padding: 0 1.5rem;
+    font-size: 0.875rem;
+    font-family: 'HelveticaNeue-Bold', sans-serif;
+    text-decoration: none;
+  }
+  
+  .boton.mediano {
+    height: 48px;
+    min-width: 80px;
+    width: fit-content;
+    padding: 0 1.5rem;
+    font-size: 0.875rem;
+    font-family: 'HelveticaNeue-Bold', sans-serif;
+  }
+  
+  .boton.fijo {
+    height: 48px;
+    width: 100%;
+    padding: 0 2rem;
+    font-size: 0.875rem;
+    font-family: 'HelveticaNeue-Bold', sans-serif;
+  }
+  
+  .boton-custom {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+  }
+  

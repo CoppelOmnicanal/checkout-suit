@@ -64,3 +64,19 @@
   --max-laptop: 1024px;
   --max-tablet: 768px;
 }
+
+body {
+  background-color: #f1f4fa !important;
+}
+
+h3 {
+  font-family: 'Circular', sans-serif;
+  font-size: 1.1rem;
+  line-height: 1.75rem;
+  min-height: 1.75rem;
+  height: fit-content;
+  font-weight: bold;
+  margin: 0;
+  width: 100%;
+  letter-spacing: 0.9px;
+}

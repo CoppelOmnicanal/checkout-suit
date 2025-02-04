@@ -1,5 +1,5 @@
 import { CartTag, Steps } from '../types/masterdata.types'
-import { OrderForm } from '../types/orderform.types'
+import { OrderForm } from '../../checkout/src/types/orderform.types'
 
 export class MasterDataApi {
   private host = '/_v/services/vtex/masterdataSteps/'

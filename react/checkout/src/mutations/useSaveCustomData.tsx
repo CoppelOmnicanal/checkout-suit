@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { OrderForm } from '../../../shared/types/orderform.types'
+import { OrderForm } from '../types/orderform.types'
 import { OrderFormApi } from '../api/orderform.api'
 import { useEffect } from 'react'
 

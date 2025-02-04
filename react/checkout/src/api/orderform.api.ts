@@ -1,5 +1,5 @@
 import { HttpMethods } from '../../../shared/services/http.service'
-import { OrderForm } from '../../../shared/types/orderform.types'
+import { OrderForm } from '../types/orderform.types'
 
 export class OrderFormApi {
   private http: HttpMethods
