@@ -89,3 +89,11 @@ h3 {
   width: 100%;
   letter-spacing: 0.9px;
 }
+
+label,
+p {
+  font-size: 16px;
+  color: var(--gris-700);
+  font-family: 'HelveticaNeue';
+  line-height: 24px;
+}

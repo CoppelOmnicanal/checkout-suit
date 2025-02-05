@@ -1,4 +1,15 @@
-.subtitle-1{
-    font-size: 18px;
-    margin-bottom: 32px;
+.subtitle-1 {
+  font-size: 18px;
+  margin-bottom: 32px;
+}
+
+.corporate-check {
+  display: flex;
+  align-items: center;
+  background-color: var(--azul-150);
+  border-radius: var(--border-radius-chico);
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+  width: 100%;
+  min-height: 64px;
 }

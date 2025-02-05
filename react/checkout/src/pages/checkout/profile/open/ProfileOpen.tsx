@@ -5,6 +5,7 @@ import { useForm } from '../../../../hooks/useForm'
 import React, { useEffect } from 'react'
 import checkout from '../../../../../../shared/public/checkout.module.css'
 import profileopen from './profileopen.module.css'
+import { Billing } from './Billing'
 
 interface ProfileOpenProps {
   clientProfileData: ClientProfileData
@@ -54,55 +55,61 @@ export const ProfileOpen: React.FC<ProfileOpenProps> = ({ clientProfileData }) =
         />
       </Container>
 
-      <Container inputType={errorType('firstName', 'Texto')} label="Nombre*" status={status['firstName']}>
-        <Input
-          handleOnChange={onChange}
-          handleStatus={onStatus}
-          attributes={{
-            type: 'text',
-            name: 'firstName',
-            placeholder: 'Ej Juan Armando',
-            defaultValue: form.firstName,
-            with: '100%',
-            validations: ['notIsEmpty', 'notHaveNumbers'],
-          }}
-        />
-      </Container>
+      <div className={checkout['form-row']}>
+        <Container inputType={errorType('firstName', 'Texto')} label="Nombre*" status={status['firstName']}>
+          <Input
+            handleOnChange={onChange}
+            handleStatus={onStatus}
+            attributes={{
+              type: 'text',
+              name: 'firstName',
+              placeholder: 'Ej. Juan',
+              defaultValue: form.firstName,
+              with: '100%',
+              validations: ['notIsEmpty', 'notHaveNumbers'],
+            }}
+          />
+        </Container>
 
-      <Container inputType={errorType('firstName', 'Texto')} label="Apellido*" status={status['lastName']}>
-        <Input
-          handleOnChange={onChange}
-          handleStatus={onStatus}
-          attributes={{
-            type: 'text',
-            name: 'lastName',
-            placeholder: 'Ej Pérez',
-            defaultValue: form.lastName,
-            with: '100%',
-            validations: ['notIsEmpty', 'notHaveNumbers'],
-          }}
-        />
-      </Container>
+        <Container inputType={errorType('firstName', 'Texto')} label="Apellido*" status={status['lastName']}>
+          <Input
+            handleOnChange={onChange}
+            handleStatus={onStatus}
+            attributes={{
+              type: 'text',
+              name: 'lastName',
+              placeholder: 'Ej. Pérez',
+              defaultValue: form.lastName,
+              with: '100%',
+              validations: ['notIsEmpty', 'notHaveNumbers'],
+            }}
+          />
+        </Container>
+      </div>
 
-      <Container inputType={errorType('document', 'DNI')} label="DNI*" status={status['document']}>
-        <Input
-          handleOnChange={onChange}
-          handleStatus={onStatus}
-          attributes={{
-            type: 'number',
-            name: 'document',
-            onlyNumber: true,
-            placeholder: 'Nro de documento',
-            defaultValue: form.document,
-            with: '100%',
-            validations: ['notIsEmpty', 'onlyNumbers'],
-          }}
-        />
-      </Container>
+      <div className={checkout['form-row']}>
+        <Container inputType={errorType('document', 'DNI')} label="DNI*" status={status['document']}>
+          <Input
+            handleOnChange={onChange}
+            handleStatus={onStatus}
+            attributes={{
+              type: 'number',
+              name: 'document',
+              onlyNumber: true,
+              placeholder: 'Nro. de documento',
+              defaultValue: form.document,
+              with: '100%',
+              validations: ['notIsEmpty', 'onlyNumbers'],
+            }}
+          />
+        </Container>
 
-      <Container inputType={Inputs.Telefono} label="Celular*" status={status['phone']}>
-        <Phone defaultValue={clientProfileData['phone']} handleStatus={onStatus} handleOnChange={onChange} />
-      </Container>
+        <Container inputType={Inputs.Telefono} label="Celular*" status={status['phone']}>
+          <Phone defaultValue={clientProfileData['phone']} handleStatus={onStatus} handleOnChange={onChange} />
+        </Container>
+      </div>
+
+      <Billing />
     </>
   )
 }
