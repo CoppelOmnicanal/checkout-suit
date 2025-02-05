@@ -1,6 +1,6 @@
 //@ts-ignore
-import { Status } from 'coppelar.components/index'
-import { useEffect, useState } from 'react'
+import { Status, Input } from 'coppelar.components/index'
+import { useState } from 'react'
 
 interface UseForm<T extends Record<string, string | number | boolean>> {
   form: T
@@ -26,17 +26,16 @@ export const useForm = <T extends Record<string, any>>({ form }: UseForm<T>) => 
   }
 
   const onStatus = (name: keyof T, status: Status) => {
-    console.log('🚀 ~ onStatus ~ status:', status)
-    console.log('🚀 ~ onStatus ~ name:', name)
     setStatus((prev) => ({
       ...prev,
       [name]: status,
     }))
   }
 
-  useEffect(() => {
-    console.log('🚀 ~ useForm ~ status:', status)
-  }, [status])
+  const errorType = (key: keyof T, name: Input) => {
+    const value = values?.[key]
+    return typeof value !== 'boolean' && `${value}`.length > 0 ? name : 'Required'
+  }
 
-  return { onChange, values, onStatus, status }
+  return { onChange, values, onStatus, errorType, status }
 }

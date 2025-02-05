@@ -1,5 +1,5 @@
 //@ts-ignore
-import { Container, Input } from 'coppelar.components/index'
+import { Container, Input, Phone, Inputs } from 'coppelar.components/index'
 import { ClientProfileData } from '../../../../types/orderform.types'
 import { useForm } from '../../../../hooks/useForm'
 import React, { useEffect } from 'react'
@@ -28,7 +28,7 @@ export const ProfileOpen: React.FC<ProfileOpenProps> = ({ clientProfileData }) =
     isCorporate: clientProfileData?.isCorporate ?? false,
   }
 
-  const { values, status, onChange, onStatus } = useForm<ProfileForm>({ form })
+  const { values, status, onChange, onStatus, errorType } = useForm<ProfileForm>({ form })
 
   useEffect(() => {
     console.log('🚀 ~ values:', values)
@@ -38,7 +38,23 @@ export const ProfileOpen: React.FC<ProfileOpenProps> = ({ clientProfileData }) =
     <>
       <div className={`${checkout['subtitle-1']} ${profileopen['subtitle-1']}`}>Completá el formulario</div>
 
-      <Container inputType={'Texto'} label="Nombre*" status={status['firstName']}>
+      <Container inputType={errorType('email', 'Mail')} label="Correo electrónico*" status={status['email']}>
+        <Input
+          handleOnChange={onChange}
+          handleStatus={onStatus}
+          attributes={{
+            type: 'text',
+            disabled: !!form.email,
+            name: 'email',
+            placeholder: 'Escribe tu correo aquí',
+            defaultValue: form.email,
+            with: '100%',
+            validations: ['notIsEmpty', 'isMail'],
+          }}
+        />
+      </Container>
+
+      <Container inputType={errorType('firstName', 'Texto')} label="Nombre*" status={status['firstName']}>
         <Input
           handleOnChange={onChange}
           handleStatus={onStatus}
@@ -48,9 +64,44 @@ export const ProfileOpen: React.FC<ProfileOpenProps> = ({ clientProfileData }) =
             placeholder: 'Ej Juan Armando',
             defaultValue: form.firstName,
             with: '100%',
-            validations: ['notIsEmpty'],
+            validations: ['notIsEmpty', 'notHaveNumbers'],
           }}
         />
+      </Container>
+
+      <Container inputType={errorType('firstName', 'Texto')} label="Apellido*" status={status['lastName']}>
+        <Input
+          handleOnChange={onChange}
+          handleStatus={onStatus}
+          attributes={{
+            type: 'text',
+            name: 'lastName',
+            placeholder: 'Ej Pérez',
+            defaultValue: form.lastName,
+            with: '100%',
+            validations: ['notIsEmpty', 'notHaveNumbers'],
+          }}
+        />
+      </Container>
+
+      <Container inputType={errorType('document', 'DNI')} label="DNI*" status={status['document']}>
+        <Input
+          handleOnChange={onChange}
+          handleStatus={onStatus}
+          attributes={{
+            type: 'number',
+            name: 'document',
+            onlyNumber: true,
+            placeholder: 'Nro de documento',
+            defaultValue: form.document,
+            with: '100%',
+            validations: ['notIsEmpty', 'onlyNumbers'],
+          }}
+        />
+      </Container>
+
+      <Container inputType={Inputs.Telefono} label="Celular*" status={status['phone']}>
+        <Phone defaultValue={clientProfileData['phone']} handleStatus={onStatus} handleOnChange={onChange} />
       </Container>
     </>
   )
