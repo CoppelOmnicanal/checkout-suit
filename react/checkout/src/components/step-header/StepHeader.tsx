@@ -1,8 +1,9 @@
+//@ts-ignore
+import { SvgIcon } from 'coppelar.components/index'
 import React from 'react'
 import { StepsStates } from '../../types/stepper.types'
-//@ts-ignore
-import Modular from 'coppelar.components/index'
 import button from '../../../../shared/public/button.module.css'
+import bootstrap from '../../../../shared/public/bootstrap.css'
 import stepHeader from './stepheader.module.css'
 
 interface ClosedStepProps {
@@ -11,20 +12,22 @@ interface ClosedStepProps {
   children: React.ReactNode
 }
 
-const { SvgIcon } = Modular
-
 export const StepHeader: React.FC<ClosedStepProps> = ({ editStep, state, children }) => {
+  const base = stepHeader['container']
+  const styles = state === StepsStates.OPEN ? base : `${base} ${bootstrap['d-flex']} ${bootstrap['align-items-start']}`
+
   return (
     <>
-      <div className={stepHeader['container']}>
+      <div className={styles}>
         {children}
-
-        <button
-          className={`${button['boton']} ${button['terciario']} ${button['ml-auto']} ${button['step-button']}`}
-          onClick={state === StepsStates.DONE ? editStep : undefined}
-        >
-          <SvgIcon name="pencilBlue" />
-        </button>
+        {state !== StepsStates.OPEN && (
+          <button
+            className={`${button['boton']} ${button['terciario']} ${button['ml-auto']} ${button['step-button']}`}
+            onClick={state === StepsStates.DONE ? editStep : undefined}
+          >
+            <SvgIcon name="pencilBlue" />
+          </button>
+        )}
       </div>
     </>
   )

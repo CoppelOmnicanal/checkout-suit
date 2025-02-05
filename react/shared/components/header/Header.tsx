@@ -5,7 +5,6 @@ import React from 'react'
 import Modular from 'coppelar.components/index'
 
 const { SvgIcon } = Modular
-
 export const Header = () => {
   return (
     <div className={`${styles['sc-section']} ${header.header}`}>

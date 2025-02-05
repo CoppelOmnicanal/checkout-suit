@@ -67,24 +67,22 @@
 
 .subtitle-1,
 .subtitle-2 {
+  color: var(--gris-700);
+  font-size: 20px;
   font-family: 'Circular', sans-serif;
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-  min-height: 1.75rem;
-  height: fit-content;
-  font-weight: bold;
-  margin: 0;
+  font-weight: 700;
+  line-height: 24px;
+  word-wrap: break-word;
   width: 100%;
-  letter-spacing: 0.9px;
 }
 
 .text-secondary {
-  font-family: 'Circular', sans-serif;
   color: var(--gris-400);
-  font-size: 1rem;
-  line-height: 1.5rem;
-  height: fit-content;
-  margin: 0;
+  font-size: 16px;
+  font-family: 'HelveticaNeue';
+  font-weight: 400;
+  line-height: 24px;
+  word-wrap: break-word;
+  margin: unset !important;
   width: 100%;
-  letter-spacing: 0.9px;
 }

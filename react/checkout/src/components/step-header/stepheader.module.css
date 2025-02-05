@@ -1,9 +1,7 @@
 .container {
   margin-bottom: 1rem;
-  display: flex;
   background-color: #fff;
   border-radius: 8px;
   padding: 16px;
   margin-top: 0.5rem;
-  align-items: flex-start;
 }

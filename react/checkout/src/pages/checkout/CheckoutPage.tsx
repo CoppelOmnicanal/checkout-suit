@@ -9,9 +9,11 @@ export const CheckoutPage = () => {
   return (
     <>
       {/*Modal*/}
-      <div className={checkout['sc-section']} style={{ marginTop: '64px' }}>
+      <div className={checkout['sc-section']} style={{ marginTop: '34px' }}>
         <div className={checkout['sc-responsive-container']}>
           <div className={checkout['section-container']}>
+            <h2 style={{ marginBottom: '32px' }}>Confirmar compra</h2>
+
             <div className={`${bootstrap['col-12']} ${bootstrap['col-md-7']} ${bootstrap['col-lg-8']}`} style={{ flex: 'auto' }}>
               <ProfileContainer />
 

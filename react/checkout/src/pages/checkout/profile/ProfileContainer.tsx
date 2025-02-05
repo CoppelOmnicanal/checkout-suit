@@ -2,7 +2,8 @@ import React, { useEffect, useMemo } from 'react'
 import { useOrderForm } from '../../../contexts/orderform'
 import { useStepper } from '../../../contexts/stepper'
 import { CheckoutSteps, StepsStates } from '../../../types/stepper.types'
-import { ProfileDone, ProfileOpen } from './'
+import { ProfileDone } from './'
+import { ProfileOpen } from './open'
 import checkout from '../../../../../shared/public/checkout.module.css'
 import { StepHeader } from '../../../components/step-header'
 
@@ -12,11 +13,13 @@ export const ProfileContainer = () => {
     return <>Skeleton</>
   }
 
-  const editStep = () => {}
-
-  const { steps, setSteps } = useStepper()
+  const { steps, setSteps, openStep } = useStepper()
   const { clientProfileData } = orderForm
   const isCompleted = useMemo(() => {
+    if (steps[CheckoutSteps.PROFILE] !== null) {
+      return steps[CheckoutSteps.PROFILE] === StepsStates.DONE
+    }
+
     const { documentType, stateInscription, corporatePhone, profileCompleteOnLoading, profileErrorOnLoading, customerClass, tradeName, ...requiredData } =
       clientProfileData
 
@@ -28,7 +31,7 @@ export const ProfileContainer = () => {
 
       return !!value
     })
-  }, [clientProfileData])
+  }, [clientProfileData, steps])
 
   useEffect(() => {
     setSteps((prev) => ({
@@ -39,13 +42,11 @@ export const ProfileContainer = () => {
 
   return (
     <div id={CheckoutSteps.PROFILE.substring(1)}>
-      <div className={`${checkout['subtitle-1']}`}>Información personal</div>
-      <StepHeader editStep={editStep} state={isCompleted ? StepsStates.DONE : StepsStates.OPEN}>
-
+      {steps[CheckoutSteps.PROFILE] !== StepsStates.OPEN && <div className={`${checkout['subtitle-1']}`}>Información personal</div>}
+      <StepHeader editStep={() => openStep(CheckoutSteps.PROFILE)} state={isCompleted ? StepsStates.DONE : StepsStates.OPEN}>
         {!steps[CheckoutSteps.PROFILE] && <p className={checkout['text-secondary']}>Completa tus datos para confirmar tu identidad</p>}
         {isCompleted && <ProfileDone clientProfileData={clientProfileData} />}
-        {!isCompleted && <ProfileOpen />}
-
+        {!isCompleted && <ProfileOpen clientProfileData={clientProfileData} />}
       </StepHeader>
     </div>
   )
