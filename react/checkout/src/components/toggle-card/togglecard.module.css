@@ -1,8 +1,4 @@
-.subtitle-1 {
-  font-size: 18px;
-}
-
-.corporate-check {
+.toggle-card {
   display: flex;
   align-items: center;
   background-color: var(--azul-150);
@@ -10,14 +6,4 @@
   padding: 0.5rem 1rem;
   width: 100%;
   min-height: 64px;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.calc-margin {
-  margin-top: calc(2rem - 1.375rem);
 }
