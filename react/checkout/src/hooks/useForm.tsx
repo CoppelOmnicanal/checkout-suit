@@ -37,5 +37,5 @@ export const useForm = <T extends Record<string, any>>({ form }: UseForm<T>) => 
     return typeof value !== 'boolean' && `${value}`.length > 0 ? name : 'Required'
   }
 
-  return { onChange, values, onStatus, errorType, status }
+  return { onChange, values, onStatus, errorType, status, setStatus, setValues }
 }
