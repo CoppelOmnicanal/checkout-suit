@@ -5,21 +5,14 @@ import { ToggleButton } from '../../../../components/toggle/ToggleButton'
 import profile from './profileopen.module.css'
 import bootstrap from '../../../../../../shared/public/bootstrap.css'
 import checkout from '../../../../../../shared/public/checkout.module.css'
-import { ProfileForm } from './ProfileOpen'
-import { useForm } from '../../../../hooks/useForm'
+import { useFormProvider } from '../../../../contexts/form/FormProvider'
+import { ProfileForm } from '..'
+import { useErrorInput } from '../../../../hooks/useInputError'
 
-interface BillingProps {
-  status: Record<keyof ProfileForm, Status>
-  form: ProfileForm
-  onChange: (name: keyof ProfileForm, value: string) => void
-  onStatus: (name: keyof ProfileForm, status: Status) => void
-  setStatus: React.Dispatch<React.SetStateAction<Record<keyof ProfileForm, Status>>>
-  setValues: React.Dispatch<React.SetStateAction<ProfileForm>>
-}
-
-export const Billing = ({ onChange, onStatus, form, status, setStatus, setValues }: BillingProps) => {
+export const Billing = () => {
+  const { status, onChange, onStatus, setStatus, setValues, form, values } = useFormProvider<ProfileForm>()
   const [active, setActive] = useState(false)
-  const { errorType } = useForm<ProfileForm>({ form })
+  const { errorType } = useErrorInput<ProfileForm>(values)
   const isRequired = useMemo(() => (active ? ['notIsEmpty'] : []), [active])
 
   useEffect(() => {

@@ -1,36 +1,17 @@
 //@ts-ignore
 import { Container, Input, Phone, Inputs, Status } from 'coppelar.components/index'
-import { ClientProfileData } from '../../../../types/orderform.types'
-import { useForm } from '../../../../hooks/useForm'
 import React from 'react'
 import checkout from '../../../../../../shared/public/checkout.module.css'
 import profileopen from './profileopen.module.css'
 import { Billing } from './Billing'
+import { useFormProvider } from '../../../../contexts/form/FormProvider'
+import { ProfileForm } from '../ProfileContainer'
+import { useErrorInput } from '../../../../hooks/useInputError'
 
-interface ProfileOpenProps {
-  clientProfileData: ClientProfileData
-}
-
-export interface ProfileForm
-  extends Omit<
-    ClientProfileData,
-    'documentType' | 'stateInscription' | 'corporatePhone' | 'profileCompleteOnLoading' | 'profileErrorOnLoading' | 'customerClass' | 'tradeName'
-  > {}
-
-export const ProfileOpen: React.FC<ProfileOpenProps> = ({ clientProfileData }) => {
-  const form: ProfileForm = {
-    email: clientProfileData?.email ?? '',
-    firstName: clientProfileData?.firstName ?? '',
-    lastName: clientProfileData?.lastName ?? '',
-    document: clientProfileData?.document ?? '',
-    phone: clientProfileData?.phone ?? '',
-    corporateName: clientProfileData?.corporateName ?? '',
-    corporateDocument: clientProfileData?.corporateDocument ?? '',
-    isCorporate: clientProfileData?.isCorporate ?? false,
-  }
-
-  const { values, status, onChange, onStatus, errorType, setStatus, setValues } = useForm<ProfileForm>({ form })
-  const billing = { status, onChange, onStatus, form, setStatus, setValues }
+export const ProfileOpen = () => {
+  const { values, status, onChange, onStatus, form } = useFormProvider<ProfileForm>()
+  const { errorType } = useErrorInput<ProfileForm>(values)
+  
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const { VALID } = Status
@@ -117,7 +98,7 @@ export const ProfileOpen: React.FC<ProfileOpenProps> = ({ clientProfileData }) =
           </Container>
         </div>
 
-        <Billing {...billing} />
+        <Billing />
 
         <button type="submit">ENVIAR</button>
       </form>
