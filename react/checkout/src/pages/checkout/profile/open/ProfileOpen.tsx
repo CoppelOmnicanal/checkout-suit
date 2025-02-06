@@ -1,5 +1,5 @@
 //@ts-ignore
-import { Container, Input, Phone, Inputs, Status, Button, ButtonTypes, ButtonSizes } from 'coppelar.components/index'
+import { Container, Input, Phone, Inputs, Status, Button, ButtonTypes, ButtonSizes, AlertTypes, Alert } from 'coppelar.components/index'
 import React, { useEffect, useState } from 'react'
 import checkout from '../../../../../../shared/public/checkout.module.css'
 import bootstrap from '../../../../../../shared/public/bootstrap.css'
@@ -55,7 +55,6 @@ export const ProfileOpen = () => {
     }))
 
     if (!active && alert) setAlert(false)
-      
   }, [active])
 
   return (
@@ -136,7 +135,13 @@ export const ProfileOpen = () => {
 
           <div className={profileopen['calc-margin']}>
             <ToggleCard text="Quiero factura A" button={toggle} />
-            {alert && <p>ALERTA</p>}
+            {alert && (
+              <div className={checkout['mb-2']}>
+                <Alert type={AlertTypes.ERROR} onClick={() => setAlert(false)}>
+                  Completa los campos de "Razón Social" y "CUIT" o desactiva la opción para continuar.
+                </Alert>
+              </div>
+            )}
             {active && <Billing />}
           </div>
 
