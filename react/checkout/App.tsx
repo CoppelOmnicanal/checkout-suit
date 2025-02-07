@@ -3,6 +3,7 @@ import { Checkout } from './src/Checkout'
 import '../shared/public/global.css'
 import { Header } from '../shared/components'
 import { Footer } from '../shared/components/footer/Footer'
+import { VtexHelmet } from '../shared/components/vtex-helmet/VtexHelmet'
 
 export const App = () => {
   const [emarsys, setEmarsys] = useState(false)
@@ -62,6 +63,7 @@ export const App = () => {
 
   return (
     <>
+      <VtexHelmet />
       <div>
         <div id="backdrop"></div>
         <Header />

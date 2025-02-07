@@ -38,7 +38,14 @@ export const ProfileOpen = () => {
 
     console.log('🚀 ~ onSubmit ~ valid:', isValid)
     console.log('🚀 ~ onSubmit ~ values:', values)
+    
   }
+
+
+  useEffect(() => {
+      console.log("EVENTOS")
+  }, [])
+
 
   useEffect(() => {
     if (!active) {
