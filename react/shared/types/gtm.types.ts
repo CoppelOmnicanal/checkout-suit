@@ -1,14 +1,59 @@
+export const enum Events {
+  CheckoutId = 'CheckoutId',
+}
+
 export interface CheckoutIdPayload {
   nd1: 'Checkout'
   nd2: GtmSections
   nd3: string
   nd4: '-'
-  event: 'CheckoutId'
+  event: Events
 }
 
 export enum GtmSections {
-  'PersonalDataEmail' = 'Datos personales - Agregar correo',
-  'PersonalDataBilling' = 'Datos personales y tipo de facturación',
+  PersonalDataEmail = 'Datos personales - Agregar correo',
+  PersonalDataBilling = 'Datos personales y tipo de facturación',
+}
+
+export interface GtmProduct {
+  id: string
+  name: string
+  category: string
+  brand: string
+  variant: string
+  price: number
+  quantity: number
+}
+
+export interface GtmDimensionProduct extends GtmProduct {
+  dimension1: string
+  dimension2: string
+  dimension3: string
+}
+
+export interface GtmOrderFormProduct {
+  id: string
+  name: string
+  sku: string
+  skuRefId: null
+  skuName: string
+  seller: 'Coppel S.A.'
+  sellerId: '1'
+  brand: string
+  brandId: string
+  isGift: false
+  category: string
+  categoryId: string
+  categoryTree: string[]
+  categoryIdTree: string[]
+  originalPrice: number
+  price: number
+  sellingPrice: number
+  tax: 0
+  quantity: number
+  components: []
+  measurementUnit: 'un'
+  unitMultiplier: 1
 }
 
 export interface DataLayer {

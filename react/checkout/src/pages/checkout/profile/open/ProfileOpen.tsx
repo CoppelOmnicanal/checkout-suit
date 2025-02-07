@@ -10,13 +10,21 @@ import { ProfileForm } from '../ProfileContainer'
 import { useErrorInput } from '../../../../hooks/useInputError'
 import { ToggleButton } from '../../../../components/toggle/ToggleButton'
 import { ToggleCard } from '../../../../components/toggle-card/ToggleCard'
+import { useGtm } from '../../../../../../shared/hooks/useGtm'
+import { Events, GtmSections, Hashes } from '../../../../../../shared'
+import { useOrderForm } from '../../../../contexts/orderform'
+import { useEmarsys } from '../../../../../../shared/hooks/useEmarsys'
 
 export const ProfileOpen = () => {
   const { values, status, setStatus, setValues, onChange, onStatus, form } = useFormProvider<ProfileForm>()
+  const { orderForm } = useOrderForm()
   const { errorType } = useErrorInput<ProfileForm>(values)
   const [active, setActive] = useState(false)
   const [alert, setAlert] = useState(false)
   const toggle = <ToggleButton onChange={setActive} checked={active} />
+  const { checkoutId, cartLoaded } = useGtm()
+  const { setEmail, cart, go } = useEmarsys()
+
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const { VALID, INVALID } = Status
@@ -38,14 +46,24 @@ export const ProfileOpen = () => {
 
     console.log('🚀 ~ onSubmit ~ valid:', isValid)
     console.log('🚀 ~ onSubmit ~ values:', values)
-    
   }
 
-
   useEffect(() => {
-      console.log("EVENTOS")
-  }, [])
+    console.log('EVENTOS')
 
+    if (!orderForm) {
+      return
+    }
+
+    setEmail(orderForm)
+    cart(orderForm)
+    go()
+    checkoutId(GtmSections.PersonalDataEmail, orderForm.orderFormId)
+    cartLoaded(Events.CheckoutId, Hashes.PROFILE, orderForm)
+    checkoutId(GtmSections.PersonalDataBilling, orderForm.orderFormId)
+    
+    //history
+  }, [])
 
   useEffect(() => {
     if (!active) {

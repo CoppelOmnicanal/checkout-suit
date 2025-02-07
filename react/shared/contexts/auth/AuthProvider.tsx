@@ -9,6 +9,10 @@ const AuthProvider: SingleProvider = ({ children }) => {
   const authApi = new AuthApi(http)
 
   const getUserProfileByEmail = async (email: string) => {
+    if (!email) {
+      return null
+    }
+
     try {
       const [user] = await authApi.getByEmail(email)
       if (user) {

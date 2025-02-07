@@ -18,7 +18,7 @@ export interface OrderForm {
   shippingData: ShippingData
   clientProfileData: ClientProfileData
   paymentData: PaymentData
-  marketingData: null
+  marketingData: MarketingData | null
   sellers: Seller[]
   clientPreferencesData: ClientPreferencesData
   commercialConditionData: null
@@ -34,6 +34,18 @@ export interface OrderForm {
   merchantContextData: null
   purchaseAgentsData: null
   itemsOrdination: null
+}
+
+export interface MarketingData {
+  utmSource: string
+  utmMedium: string
+  utmCampaign: string
+  utmipage: string
+  utmiPart: string
+  utmiCampaign: string
+  campaignMedium?: string
+  coupon: null
+  marketingTags: any[]
 }
 
 export interface UserDevice {
