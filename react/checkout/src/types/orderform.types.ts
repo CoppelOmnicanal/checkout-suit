@@ -62,11 +62,11 @@ export interface ClientProfileData {
   firstName: string
   lastName: string
   document: string
-  documentType: null
+  documentType: string | null
   phone: string
-  corporateName?: string
+  corporateName: string | null
   tradeName: null
-  corporateDocument?: string
+  corporateDocument: string | null
   stateInscription: null
   corporatePhone: null
   isCorporate: boolean

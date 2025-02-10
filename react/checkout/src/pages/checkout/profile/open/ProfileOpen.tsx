@@ -14,19 +14,26 @@ import { useGtm } from '../../../../../../shared/hooks/useGtm'
 import { Events, GtmSections, Hashes } from '../../../../../../shared'
 import { useOrderForm } from '../../../../contexts/orderform'
 import { useEmarsys } from '../../../../../../shared/hooks/useEmarsys'
+import { useStepper } from '../../../../contexts/stepper'
+import { CheckoutSteps } from '../../../../types/stepper.types'
+import { useUpdateProfile } from '../../../../mutations/useUpdateProfile'
 
-export const ProfileOpen = () => {
+export const ProfileOpen = ({ setForm }: { setForm: React.Dispatch<React.SetStateAction<ProfileForm>> }) => {
   const { values, status, setStatus, setValues, onChange, onStatus, form } = useFormProvider<ProfileForm>()
-  const { orderForm } = useOrderForm()
+  const { orderForm, orderFormService } = useOrderForm()
+  const updatProfile = useUpdateProfile(orderFormService)
   const { errorType } = useErrorInput<ProfileForm>(values)
   const [active, setActive] = useState(false)
   const [alert, setAlert] = useState(false)
   const toggle = <ToggleButton onChange={setActive} checked={active} />
   const { checkoutId, cartLoaded } = useGtm()
   const { setEmail, cart, go } = useEmarsys()
+  const { doneStep } = useStepper()
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    event.stopPropagation()
+
     const { VALID, INVALID } = Status
     const { isCorporate, corporateDocument, corporateName, ...fields } = status
     const billing = values.isCorporate ? corporateDocument === VALID && corporateName === VALID : VALID
@@ -44,13 +51,35 @@ export const ProfileOpen = () => {
 
     const isValid = Object.values(fields).every((status) => status === Status.VALID) && billing === VALID
 
-    console.log('🚀 ~ onSubmit ~ valid:', isValid)
-    console.log('🚀 ~ onSubmit ~ values:', values)
+    if (!isValid) {
+      const invalid = Object.entries(values).reduce(
+        (acc, current) => {
+          const key = current[0] as keyof ProfileForm
+          const { INVALID, NORMAL } = Status
+
+          acc[key] = status[key] === NORMAL ? INVALID : status[key]
+          return acc
+        },
+        {} as Record<keyof ProfileForm, Status>,
+      )
+
+      setStatus((prev) => ({
+        ...prev,
+        ...invalid,
+      }))
+
+      return
+    }
+
+    values['corporateName'] = values['corporateName'] === '' ? null : values['corporateName']
+    values['corporateDocument'] = values['corporateDocument'] === '' ? null : values['corporateDocument']
+
+    updatProfile({ form: values })
+    setForm(values)
+    doneStep(CheckoutSteps.PROFILE)
   }
 
   useEffect(() => {
-    console.log('EVENTOS')
-
     if (!orderForm) {
       return
     }
@@ -61,7 +90,7 @@ export const ProfileOpen = () => {
     checkoutId(GtmSections.PersonalDataEmail, orderForm.orderFormId)
     cartLoaded(Events.CheckoutId, Hashes.PROFILE, orderForm)
     checkoutId(GtmSections.PersonalDataBilling, orderForm.orderFormId)
-    
+
     //history
   }, [])
 
@@ -158,7 +187,7 @@ export const ProfileOpen = () => {
             </Container>
           </div>
 
-          <div className={profileopen['calc-margin']}>
+          <div className={`${profileopen['calc-margin']} ${checkout['mb-1']}`}>
             <ToggleCard text="Quiero factura A" button={toggle} />
             {alert && (
               <div className={checkout['mb-2']}>
@@ -170,7 +199,7 @@ export const ProfileOpen = () => {
             {active && <Billing />}
           </div>
 
-          <div className={`${bootstrap['d-flex']} ${bootstrap['w-100']} ${bootstrap['justify-content-end']} ${profileopen['mt-2']}`}>
+          <div className={`${bootstrap['d-flex']} ${bootstrap['w-100']} ${bootstrap['justify-content-end']} ${profileopen['mt-2']} ${checkout['mt-1']}`}>
             <Button type={ButtonTypes.Button} submit={true} text={'Continuar'} styleProps={{ fontWeight: 'bold' }} size={ButtonSizes.Mediano} />
           </div>
         </div>

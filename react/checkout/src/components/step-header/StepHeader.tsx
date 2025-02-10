@@ -13,6 +13,7 @@ interface ClosedStepProps {
 }
 
 export const StepHeader: React.FC<ClosedStepProps> = ({ editStep, state, children }) => {
+  
   const base = stepHeader['container']
   const styles = state === StepsStates.OPEN ? base : `${base} ${bootstrap['d-flex']} ${bootstrap['align-items-start']}`
 

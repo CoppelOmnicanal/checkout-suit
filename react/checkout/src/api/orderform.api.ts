@@ -1,5 +1,5 @@
 import { HttpMethods } from '../../../shared/services/http.service'
-import { OrderForm } from '../types/orderform.types'
+import { ClientProfileData, OrderForm } from '../types/orderform.types'
 
 export class OrderFormApi {
   private http: HttpMethods
@@ -16,6 +16,12 @@ export class OrderFormApi {
   async saveCustomData(data: string, orderFormId: string, fieldName: string) {
     const url = `${orderFormId}/customData/superiorcheckout/${fieldName}`
     const orderForm = await this.http.put<OrderForm, string>(url, JSON.stringify({ value: data }))
+    return orderForm
+  }
+
+  async updateProfile(form: ClientProfileData, orderFormId: string) {
+    const url = `${orderFormId}/attachments/clientProfileData`
+    const orderForm = await this.http.post<OrderForm, ClientProfileData>(url, form)
     return orderForm
   }
 }

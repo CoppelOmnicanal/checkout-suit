@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useOrderForm } from '../../../contexts/orderform'
 import { useStepper } from '../../../contexts/stepper'
 import { CheckoutSteps, StepsStates } from '../../../types/stepper.types'
@@ -21,57 +21,51 @@ export const ProfileContainer = () => {
     return <>Skeleton</>
   }
 
-  const { steps, setSteps, openStep } = useStepper()
+  const { steps, openStep } = useStepper()
   const { clientProfileData } = orderForm
-  const isCompleted = useMemo(() => {
-    if (steps[CheckoutSteps.PROFILE] !== null) {
-      return steps[CheckoutSteps.PROFILE] === StepsStates.DONE
+  const initialData: ProfileForm = useMemo(
+    () => ({
+      email: clientProfileData?.email ?? '',
+      firstName: clientProfileData?.firstName ?? '',
+      lastName: clientProfileData?.lastName ?? '',
+      document: clientProfileData?.document ?? '',
+      phone: clientProfileData?.phone ?? '',
+      corporateName: clientProfileData?.corporateName ?? '',
+      corporateDocument: clientProfileData?.corporateDocument ?? '',
+      isCorporate: clientProfileData?.isCorporate ?? false,
+    }),
+    [],
+  )
+
+
+  const [form, setForm] = useState(initialData)
+  const { corporateName, corporateDocument, isCorporate, ...data } = form
+  const [display, setDisplay] = useState<StepsStates>(Object.values(data).every((value) => !!value) ? StepsStates.DONE : StepsStates.OPEN)
+  const render = useMemo(() => {
+    const elements: Record<StepsStates, JSX.Element> = {
+      [StepsStates.CLOSED]: <p className={checkout['text-secondary']}>Completa tus datos para confirmar tu identidad</p>,
+      [StepsStates.DONE]: <ProfileDone clientProfileData={form} />,
+      [StepsStates.OPEN]: (
+        <FormProvider form={form}>
+          <ProfileOpen setForm={setForm}/>
+        </FormProvider>
+      ),
     }
 
-    const { documentType, stateInscription, corporatePhone, profileCompleteOnLoading, profileErrorOnLoading, customerClass, tradeName, ...requiredData } =
-      clientProfileData
-
-    return Object.entries(requiredData).every((item) => {
-      const [key, value] = item
-      if (key.toLowerCase().includes('corporate') && !requiredData.isCorporate) {
-        return true
-      }
-
-      return !!value
-    })
-  }, [clientProfileData, steps])
-
-  const form: ProfileForm = {
-    email: clientProfileData?.email ?? '',
-    firstName: clientProfileData?.firstName ?? '',
-    lastName: clientProfileData?.lastName ?? '',
-    document: clientProfileData?.document ?? '',
-    phone: clientProfileData?.phone ?? '',
-    corporateName: clientProfileData?.corporateName ?? '',
-    corporateDocument: clientProfileData?.corporateDocument ?? '',
-    isCorporate: clientProfileData?.isCorporate ?? false,
-  }
+    return elements[display]
+  }, [display])
 
   useEffect(() => {
-    setSteps((prev) => ({
-      ...prev,
-      [CheckoutSteps.PROFILE]: isCompleted ? StepsStates.DONE : StepsStates.OPEN,
-    }))
-  }, [isCompleted])
+    const initialRender = Object.values(steps).every((step) => step === StepsStates.CLOSED)
+    if (!initialRender) setDisplay(steps[CheckoutSteps.PROFILE])
+  }, [steps])
+
 
   return (
     <div id={CheckoutSteps.PROFILE.substring(1)}>
       {steps[CheckoutSteps.PROFILE] !== StepsStates.OPEN && <div className={`${checkout['subtitle-1']}`}>Información personal</div>}
-      <StepHeader editStep={() => openStep(CheckoutSteps.PROFILE)} state={isCompleted ? StepsStates.DONE : StepsStates.OPEN}>
-        {!steps[CheckoutSteps.PROFILE] && <p className={checkout['text-secondary']}>Completa tus datos para confirmar tu identidad</p>}
-        
-        {isCompleted && <ProfileDone clientProfileData={clientProfileData} />}
-
-        {!isCompleted && (
-          <FormProvider form={form}>
-            <ProfileOpen />
-          </FormProvider>
-        )}
+      <StepHeader editStep={() => openStep(CheckoutSteps.PROFILE)} state={display}>
+        {render}
       </StepHeader>
     </div>
   )

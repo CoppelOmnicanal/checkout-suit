@@ -1,14 +1,12 @@
 import React from 'react'
-import { ClientProfileData } from '../../../types/orderform.types'
 import checkout from '../../../../../shared/public/checkout.module.css'
 //@ts-ignore
-import Modular from 'coppelar.components/index'
+import { usePhone } from 'coppelar.components/index'
+import { ProfileForm } from '.'
 
 interface ProfileDoneProps {
-  clientProfileData: ClientProfileData
+  clientProfileData: ProfileForm
 }
-
-const { usePhone } = Modular
 
 export const ProfileDone: React.FC<ProfileDoneProps> = ({ clientProfileData }) => {
   const { formatter } = usePhone()

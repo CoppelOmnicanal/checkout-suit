@@ -11,7 +11,7 @@ export enum StepsStates {
 }
 
 export const INITIAL_STEPS = {
-  [CheckoutSteps.PROFILE]: null,
-  [CheckoutSteps.SHIPPING]: null,
-  [CheckoutSteps.PAYMENT]: null,
+  [CheckoutSteps.PROFILE]: StepsStates.CLOSED,
+  [CheckoutSteps.SHIPPING]: StepsStates.CLOSED,
+  [CheckoutSteps.PAYMENT]: StepsStates.CLOSED,
 }

@@ -36,6 +36,7 @@ const OrderFormProvider: SingleProvider = ({ children }) => {
   const data: OrderFormContextType = {
     orderForm,
     orderFormLoading: isLoading,
+    orderFormService
   }
 
   return <OrderFormContext.Provider value={data}>{children}</OrderFormContext.Provider>
