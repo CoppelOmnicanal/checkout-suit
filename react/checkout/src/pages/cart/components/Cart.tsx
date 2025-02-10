@@ -1,7 +1,12 @@
 import React from 'react'
+import { useOrderForm } from '../../../contexts/orderform'
 
 export const Cart = () => {
+  const { modifiersLoading } = useOrderForm()
   return (
-    <div>Cart</div>
+    <>
+      {modifiersLoading && <span>Modificadores cargando: bloquear boton de eliminar/alterar productos</span>}
+      <div>Cart</div>
+    </>
   )
 }

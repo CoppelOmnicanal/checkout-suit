@@ -1,8 +1,15 @@
 import { CartTag, Steps } from '../types/masterdata.types'
 import { OrderForm } from '../../checkout/src/types/orderform.types'
+import { HttpMethods } from '../services/http.service'
+import { ItemContext } from '../../checkout/src/types/itemcontext.types'
 
 export class MasterDataApi {
   private host = '/_v/services/vtex/masterdataSteps/'
+  private http: HttpMethods | undefined
+
+  constructor(http?: HttpMethods) {
+    this.http = http
+  }
 
   gtmEntry(orderForm: OrderForm, userId: string) {
     const payload = { orderformid: orderForm.orderFormId }
@@ -95,5 +102,12 @@ export class MasterDataApi {
     const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' })
 
     navigator.sendBeacon(url, blob)
+  }
+
+  async itemContext(itemId: string) {
+    if (!this.http) throw new Error('HttpMethods not defined')
+    const url = `/_v/services/vtex/getContext/${itemId}`
+    const context = this.http.get<ItemContext>(url)
+    return context;
   }
 }

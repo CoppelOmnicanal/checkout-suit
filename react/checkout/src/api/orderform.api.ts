@@ -1,5 +1,5 @@
 import { HttpMethods } from '../../../shared/services/http.service'
-import { ClientProfileData, OrderForm } from '../types/orderform.types'
+import { AddToCartItem, ClientProfileData, ItemsPayload, OrderForm } from '../types/orderform.types'
 
 export class OrderFormApi {
   private http: HttpMethods
@@ -22,6 +22,18 @@ export class OrderFormApi {
   async updateProfile(form: ClientProfileData, orderFormId: string) {
     const url = `${orderFormId}/attachments/clientProfileData`
     const orderForm = await this.http.post<OrderForm, ClientProfileData>(url, form)
+    return orderForm
+  }
+
+  async emptyCart(orderFormId: string) {
+    const url = `${orderFormId}/items/removeAll`
+    const orderForm = await this.http.post<OrderForm, {}>(url, {})
+    return orderForm
+  }
+
+  async addItems(items: ItemsPayload[], orderFormId: string) {
+    const url = `${orderFormId}/items`
+    const orderForm = await this.http.post<OrderForm, { orderItems: ItemsPayload[] }>(url, { orderItems: items })
     return orderForm
   }
 }

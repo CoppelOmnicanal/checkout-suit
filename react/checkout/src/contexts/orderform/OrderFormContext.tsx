@@ -6,6 +6,7 @@ export interface OrderFormContextType {
   orderForm: OrderForm | undefined
   orderFormLoading: boolean
   orderFormService: OrderFormApi
+  modifiersLoading: boolean
 }
 
 export const OrderFormContext = createContext<OrderFormContextType | undefined>(undefined)

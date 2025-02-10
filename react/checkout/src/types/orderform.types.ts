@@ -462,3 +462,12 @@ export interface Totalizer {
   value: number
   alternativeTotals?: Totalizer[]
 }
+
+export const REFID_MAX_LENGTH = 3
+
+export interface ItemsPayload {
+  id: string
+  quantity: number
+  seller: string
+  index: number
+}
