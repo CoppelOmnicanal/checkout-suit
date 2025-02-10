@@ -23,7 +23,7 @@ export const ProfileOpen = ({ setForm }: { setForm: React.Dispatch<React.SetStat
   const { orderForm, orderFormService } = useOrderForm()
   const updatProfile = useUpdateProfile(orderFormService)
   const { errorType } = useErrorInput<ProfileForm>(values)
-  const [active, setActive] = useState(false)
+  const [active, setActive] = useState(form.isCorporate)
   const [alert, setAlert] = useState(false)
   const toggle = <ToggleButton onChange={setActive} checked={active} />
   const { checkoutId, cartLoaded } = useGtm()
@@ -36,7 +36,7 @@ export const ProfileOpen = ({ setForm }: { setForm: React.Dispatch<React.SetStat
 
     const { VALID, INVALID } = Status
     const { isCorporate, corporateDocument, corporateName, ...fields } = status
-    const billing = values.isCorporate ? corporateDocument === VALID && corporateName === VALID : VALID
+    const billing = values.isCorporate ? (corporateDocument === VALID && corporateName === VALID ? VALID : INVALID) : VALID
 
     if (!billing && values.isCorporate) {
       setStatus((prev) => ({
