@@ -1,23 +1,18 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { OrderForm } from '../types/orderform.types'
+import { ItemsPayload, OrderForm } from '../types/orderform.types'
 import { OrderFormApi } from '../api/orderform.api'
 import { useEffect } from 'react'
-import { ProfileForm } from '../pages/checkout/profile'
 
-export const useUpdateProfile = (orderFormService: OrderFormApi) => {
+export const useAddItems = (orderFormService: OrderFormApi) => {
   const queryClient = useQueryClient()
 
-  const mutation = useMutation<OrderForm, Error, { form: ProfileForm }>(
-    async ({ form }) => {
+  const mutation = useMutation<OrderForm, Error, { items: ItemsPayload[] }>(
+    async ({ items }) => {
       const currentOrderForm = queryClient.getQueryData<OrderForm>(['orderForm'])
       if (!currentOrderForm) throw new Error('No se encontró el orderForm en caché.')
-      const { clientProfileData, orderFormId } = currentOrderForm
 
-      return await orderFormService.updateProfile({ 
-        ...clientProfileData, 
-        ...form, 
-        documentType: 'dni' 
-      }, orderFormId)
+      const { orderFormId } = currentOrderForm
+      return await orderFormService.addItems(items, orderFormId)
     },
     {
       onSuccess: (updatedOrderForm) => {
@@ -32,5 +27,5 @@ export const useUpdateProfile = (orderFormService: OrderFormApi) => {
     }
   }, [mutation])
 
-  return mutation.mutateAsync
+  return mutation.mutate
 }

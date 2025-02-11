@@ -10,6 +10,8 @@ export type FormContextType<T> = {
   onStatus: (name: keyof T, status: Status) => void
   setValues: React.Dispatch<React.SetStateAction<T>>
   setStatus: React.Dispatch<React.SetStateAction<Record<keyof T, Status>>>
+  setLoadingForm: React.Dispatch<React.SetStateAction<boolean>>
+  loadingForm: boolean
 }
 
 export const FormContext = createContext<FormContextType<any> | undefined>(undefined)

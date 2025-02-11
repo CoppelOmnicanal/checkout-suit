@@ -17,6 +17,7 @@ const initializeStatus = <T extends Record<string, any>>(form: T): Record<keyof 
 export const FormProvider = <T extends Record<string, any>>({ children, form }: { children: React.ReactNode; form: T }) => {
   const [values, setValues] = useState<T>(form)
   const [status, setStatus] = useState<Record<keyof T, Status>>(initializeStatus(form))
+  const [loadingForm, setLoadingForm] = useState<boolean>(false)
 
   const onChange = (name: keyof T, value: string) => {
     setValues((prev) => ({
@@ -41,7 +42,9 @@ export const FormProvider = <T extends Record<string, any>>({ children, form }: 
         onStatus: onStatus as (name: string | number | symbol, status: Status) => void,
         setValues,
         setStatus,
-        form
+        form,
+        setLoadingForm,
+        loadingForm
       }}
     >
       {children}

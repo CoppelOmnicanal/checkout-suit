@@ -30,7 +30,7 @@ export const ProfileOpen = ({ setForm }: { setForm: React.Dispatch<React.SetStat
   const { setEmail, cart, go } = useEmarsys()
   const { doneStep } = useStepper()
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     event.stopPropagation()
 
@@ -71,8 +71,8 @@ export const ProfileOpen = ({ setForm }: { setForm: React.Dispatch<React.SetStat
       return
     }
 
-    values['corporateName'] = values['corporateName'] === '' ? null : values['corporateName']
-    values['corporateDocument'] = values['corporateDocument'] === '' ? null : values['corporateDocument']
+    values['corporateName'] = !values['isCorporate'] || values['corporateName'] === '' ? null : values['corporateName']
+    values['corporateDocument'] = !values['isCorporate'] || values['corporateDocument'] === '' ? null : values['corporateDocument']
 
     updatProfile({ form: values })
     setForm(values)

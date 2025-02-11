@@ -37,7 +37,6 @@ export const ProfileContainer = () => {
     [],
   )
 
-
   const [form, setForm] = useState(initialData)
   const { corporateName, corporateDocument, isCorporate, ...data } = form
   const [display, setDisplay] = useState<StepsStates>(Object.values(data).every((value) => !!value) ? StepsStates.DONE : StepsStates.OPEN)
@@ -45,11 +44,7 @@ export const ProfileContainer = () => {
     const elements: Record<StepsStates, JSX.Element> = {
       [StepsStates.CLOSED]: <p className={checkout['text-secondary']}>Completa tus datos para confirmar tu identidad</p>,
       [StepsStates.DONE]: <ProfileDone clientProfileData={form} />,
-      [StepsStates.OPEN]: (
-        <FormProvider form={form}>
-          <ProfileOpen setForm={setForm}/>
-        </FormProvider>
-      ),
+      [StepsStates.OPEN]: <ProfileOpen setForm={setForm} />,
     }
 
     return elements[display]
@@ -60,12 +55,11 @@ export const ProfileContainer = () => {
     if (!initialRender) setDisplay(steps[CheckoutSteps.PROFILE])
   }, [steps])
 
-
   return (
     <div id={CheckoutSteps.PROFILE.substring(1)}>
       {steps[CheckoutSteps.PROFILE] !== StepsStates.OPEN && <div className={`${checkout['subtitle-1']}`}>Información personal</div>}
       <StepHeader editStep={() => openStep(CheckoutSteps.PROFILE)} state={display}>
-        {render}
+        <FormProvider form={form}>{render}</FormProvider>
       </StepHeader>
     </div>
   )
