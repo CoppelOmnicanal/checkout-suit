@@ -38,7 +38,7 @@ export const ProfileOpen = ({ setForm }: { setForm: React.Dispatch<React.SetStat
     const { isCorporate, corporateDocument, corporateName, ...fields } = status
     const billing = values.isCorporate ? (corporateDocument === VALID && corporateName === VALID ? VALID : INVALID) : VALID
 
-    if (!billing && values.isCorporate) {
+    if (billing === INVALID && values.isCorporate) {
       setStatus((prev) => ({
         ...prev,
         ['corporateName']: INVALID,
@@ -117,7 +117,7 @@ export const ProfileOpen = ({ setForm }: { setForm: React.Dispatch<React.SetStat
         <div className={`${checkout['subtitle-1']} ${profileopen['subtitle-1']}`}>Completá el formulario</div>
 
         <div>
-          <Container inputType={errorType('email', Inputs.Mail)} label="Correo electrónico*" status={status['email']}>
+          <Container inputType={errorType('email', Inputs.Mail)} label="Correo electrónico*" status={status['email']} disabled={!!form.email}>
             <Input
               handleOnChange={onChange}
               handleStatus={onStatus}
@@ -192,7 +192,7 @@ export const ProfileOpen = ({ setForm }: { setForm: React.Dispatch<React.SetStat
             {alert && (
               <div className={checkout['mb-2']}>
                 <Alert type={AlertTypes.ERROR} onClick={() => setAlert(false)}>
-                  Completa los campos de "Razón Social" y "CUIT" o desactiva la opción para continuar.
+                  Para Factura A, completá "Razón Social" y "CUIT" o desactivá la opción
                 </Alert>
               </div>
             )}
