@@ -1,5 +1,5 @@
 //@ts-ignore
-import { Container, Input, Phone, Inputs, Status, Button, ButtonTypes, ButtonSizes, AlertTypes, Alert } from 'coppelar.components/index'
+import { Container, Input, Phone, Inputs, Status, Button, ButtonTypes, ButtonSizes, ButtonStyles, AlertTypes, Alert } from 'coppelar.components/index'
 import React, { useEffect, useState } from 'react'
 import checkout from '../../../../../../shared/public/checkout.module.css'
 import bootstrap from '../../../../../../shared/public/bootstrap.css'
@@ -29,6 +29,12 @@ export const ProfileOpen = ({ setForm }: { setForm: React.Dispatch<React.SetStat
   const { checkoutId, cartLoaded } = useGtm()
   const { setEmail, cart, go } = useEmarsys()
   const { doneStep } = useStepper()
+
+  const onChangeProfile = (e: React.MouseEvent<HTMLDivElement>) => {
+    console.log('🚀 ~ onChangeProfile ~ e:', e)
+  }
+
+  const changeProfile = <Button style={ButtonStyles.Terciario} text={'Cambiar perfil'} onPress={onChangeProfile} styleProps={{ padding: 'unset', fontWeight: 700 }} />
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -117,7 +123,7 @@ export const ProfileOpen = ({ setForm }: { setForm: React.Dispatch<React.SetStat
         <div className={`${checkout['subtitle-1']} ${profileopen['subtitle-1']}`}>Completá el formulario</div>
 
         <div>
-          <Container inputType={errorType('email', Inputs.Mail)} label="Correo electrónico*" status={status['email']} disabled={!!form.email}>
+          <Container inputType={errorType('email', Inputs.Mail)} label="Correo electrónico*" status={status['email']} disabled={!!form.email} button={changeProfile}>
             <Input
               handleOnChange={onChange}
               handleStatus={onStatus}

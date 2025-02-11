@@ -4,6 +4,7 @@ import '../shared/public/global.css'
 import { Header } from '../shared/components'
 import { Footer } from '../shared/components/footer/Footer'
 import { VtexHelmet } from '../shared/components/vtex-helmet/VtexHelmet'
+import { Loading } from '../shared/components/loading-page/Loading'
 
 export const App = () => {
   const [emarsys, setEmarsys] = useState(false)
@@ -67,7 +68,7 @@ export const App = () => {
       <div>
         <div id="backdrop"></div>
         <Header />
-        {isReady ? <Checkout /> : 'Cargando...'}
+        {isReady ? <Checkout /> : <Loading />}
         <Footer />
       </div>
     </>

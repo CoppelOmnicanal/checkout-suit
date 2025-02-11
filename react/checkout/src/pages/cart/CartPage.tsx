@@ -3,12 +3,13 @@ import { useOrderForm } from '../../contexts/orderform'
 import checkout from '../../../../shared/public/checkout.module.css'
 import cartpage from './cart.module.css'
 import { Cart, CartEmpty } from './components'
+import { Loading } from '../../../../shared/components/loading-page/Loading'
 
 export const CartPage = () => {
   const { orderFormLoading, orderForm } = useOrderForm()
 
   if (orderFormLoading) {
-    return <div>Cargando CartPage...</div>
+    return <Loading />
   }
 
   return (

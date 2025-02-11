@@ -4,8 +4,15 @@ import bootstrap from '../../../../shared/public/bootstrap.css'
 import { ProfileContainer } from './profile/ProfileContainer'
 import { ShippingProvider } from '../../contexts/shipping'
 import { ShippingContainer } from './shipping/ShippingContainer'
+import { useOrderForm } from '../../contexts/orderform'
+import { Loading } from '../../../../shared/components/loading-page/Loading'
 
 export const CheckoutPage = () => {
+  const { orderFormLoading } = useOrderForm()
+  if (orderFormLoading) {
+    return <Loading />
+  }
+
   return (
     <>
       {/*Modal*/}
