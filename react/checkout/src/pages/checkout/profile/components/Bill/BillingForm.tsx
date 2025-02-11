@@ -1,12 +1,12 @@
 //@ts-ignore
-import { Container, Input, Inputs, Status } from 'coppelar.components/index'
+import { Container, Input, Inputs } from 'coppelar.components/index'
 import React from 'react'
-import checkout from '../../../../../../shared/public/checkout.module.css'
-import { useFormProvider } from '../../../../contexts/form/FormProvider'
-import { ProfileForm } from '..'
-import { useErrorInput } from '../../../../hooks/useInputError'
+import { useFormProvider } from '../../../../../contexts/form/FormProvider'
+import { ProfileForm } from '../..'
+import { useErrorInput } from '../../../../../hooks/useInputError'
+import checkout from '../../../../../../../shared/public/checkout.module.css'
 
-export const Billing = () => {
+export const BillingForm = () => {
   const { status, onChange, onStatus, form, values } = useFormProvider<ProfileForm>()
   const { errorType } = useErrorInput<ProfileForm>(values)
 

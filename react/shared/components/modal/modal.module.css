@@ -1,0 +1,44 @@
+.cp-modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(27, 26, 22, 0.4);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 0.5rem;
+}
+
+.cp-modal {
+  background-color: var(--blanco-0);
+  border: 1px solid var(--gris-200);
+  padding: 1rem;
+  box-shadow: 0px 6px 24px rgba(25, 75, 123, 0.18);
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 30rem;
+  position: relative;
+}
+
+.cp-modal-header {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cp-modal .close {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cp-modal .close > *:only-child {
+  margin-left: auto;
+}

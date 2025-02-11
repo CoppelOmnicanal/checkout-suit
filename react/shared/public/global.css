@@ -69,22 +69,31 @@ body {
   background-color: #f1f4fa !important;
 }
 
-h2 {
-  color: var(--gris-700);
-  font-size: 28px;
+h1 {
+  color: var(--gris-700) !important;
+  font-size: 36px !important;
   font-family: 'Circular', sans-serif;
-  font-weight: 700;
-  line-height: 36px;
+  font-weight: 700 !important;
+  line-height: 46.8px !important;
+  word-wrap: break-word;
+}
+
+h2 {
+  color: var(--gris-700) !important;
+  font-size: 28px !important;
+  font-family: 'Circular', sans-serif;
+  font-weight: 700 !important;
+  line-height: 36px !important;
   word-wrap: break-word;
 }
 
 h3 {
   font-family: 'Circular', sans-serif;
-  font-size: 1.1rem;
-  line-height: 1.75rem;
+  font-size: 1.1r !important;
+  line-height: 1.75rem !important;
   min-height: 1.75rem;
   height: fit-content;
-  font-weight: bold;
+  font-weight: bold !important;
   margin: 0;
   width: 100%;
   letter-spacing: 0.9px;
@@ -92,10 +101,10 @@ h3 {
 
 label,
 p {
-  font-size: 16px;
+  font-size: 16px !important;
   color: var(--gris-700);
   font-family: 'HelveticaNeue';
-  line-height: 24px;
+  line-height: 24px !important;
 }
 
 button {

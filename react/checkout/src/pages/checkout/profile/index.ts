@@ -1,3 +1,3 @@
-export * from './open/ProfileOpen';
+export * from './components/ProfileOpen';
 export * from './ProfileContainer';
 export * from './ProfileDone';
