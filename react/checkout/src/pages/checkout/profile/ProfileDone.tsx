@@ -34,7 +34,7 @@ export const ProfileDone: React.FC<ProfileDoneProps> = ({ clientProfileData }) =
               <b style={{ color: '#000' }}>Factura A</b>
               <br />
               Razón social: <b>{corporateName}</b> <br />
-              CUITE: <b>{corporateDocument}</b>
+              CUIT: <b>{corporateDocument}</b>
             </p>
           </>
         )}
