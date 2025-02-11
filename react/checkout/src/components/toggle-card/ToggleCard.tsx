@@ -1,5 +1,5 @@
 import React from 'react'
-import bootstrap from '../../../../shared/public/bootstrap.css'
+import bootstrap from '../../../../shared/public/bootstrap.module.css'
 import checkout from '../../../../shared/public/checkout.module.css'
 import togglecard from './togglecard.module.css'
 

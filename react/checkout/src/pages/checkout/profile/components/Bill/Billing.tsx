@@ -5,8 +5,8 @@ import { ToggleCard } from '../../../../../components/toggle-card/ToggleCard'
 import { ToggleButton } from '../../../../../components/toggle/ToggleButton'
 import { ProfileForm } from '../..'
 import { useFormProvider } from '../../../../../contexts/form/FormProvider'
-import profileopen from '../profileopen.module.css'
 import { BillingForm } from './BillingForm'
+import profileopen from '../profileopen.module.css'
 import checkout from '../../../../../../../shared/public/checkout.module.css'
 
 export const Billing = () => {

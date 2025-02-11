@@ -3,7 +3,7 @@ import { SvgIcon } from 'coppelar.components/index'
 import React from 'react'
 import { StepsStates } from '../../types/stepper.types'
 import button from '../../../../shared/public/button.module.css'
-import bootstrap from '../../../../shared/public/bootstrap.css'
+import bootstrap from '../../../../shared/public/bootstrap.module.css'
 import stepHeader from './stepheader.module.css'
 
 interface ClosedStepProps {

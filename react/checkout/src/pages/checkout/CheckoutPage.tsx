@@ -1,6 +1,6 @@
 import React from 'react'
 import checkout from '../../../../shared/public/checkout.module.css'
-import bootstrap from '../../../../shared/public/bootstrap.css'
+import bootstrap from '../../../../shared/public/bootstrap.module.css'
 import { ProfileContainer } from './profile/ProfileContainer'
 import { ShippingProvider } from '../../contexts/shipping'
 import { ShippingContainer } from './shipping/ShippingContainer'

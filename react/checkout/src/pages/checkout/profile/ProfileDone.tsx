@@ -2,7 +2,7 @@
 import { usePhone } from 'coppelar.components/index'
 import React from 'react'
 import checkout from '../../../../../shared/public/checkout.module.css'
-import bootstrap from '../../../../../shared/public/bootstrap.css'
+import bootstrap from '../../../../../shared/public/bootstrap.module.css'
 import { ProfileForm } from '.'
 
 interface ProfileDoneProps {

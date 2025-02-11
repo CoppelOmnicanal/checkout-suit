@@ -1,5 +1,5 @@
 import React from 'react'
-import bootstrap from '../../public/bootstrap.css'
+import bootstrap from '../../public/bootstrap.module.css'
 import loading from './loading.module.css'
 
 export const Loading = () => {

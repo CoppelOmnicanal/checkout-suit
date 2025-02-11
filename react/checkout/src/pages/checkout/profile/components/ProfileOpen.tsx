@@ -2,7 +2,7 @@
 import { Status, Button, ButtonTypes, ButtonSizes } from 'coppelar.components/index'
 import React, { useEffect, useState } from 'react'
 import checkout from '../../../../../../shared/public/checkout.module.css'
-import bootstrap from '../../../../../../shared/public/bootstrap.css'
+import bootstrap from '../../../../../../shared/public/bootstrap.module.css'
 import profileopen from './profileopen.module.css'
 import { useFormProvider } from '../../../../contexts/form/FormProvider'
 import { ProfileForm } from '../ProfileContainer'
@@ -19,7 +19,7 @@ import { Profile } from './Profile'
 import { Billing } from './Bill/Billing'
 
 export const ProfileOpen = ({ setForm }: { setForm: React.Dispatch<React.SetStateAction<ProfileForm>> }) => {
-  const { values, status, setStatus, form } = useFormProvider<ProfileForm>()
+  const { values, status, setStatus } = useFormProvider<ProfileForm>()
   const { orderForm, orderFormService } = useOrderForm()
   const updatProfile = useUpdateProfile(orderFormService)
   const { checkoutId, cartLoaded } = useGtm()
