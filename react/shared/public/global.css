@@ -1,5 +1,10 @@
 @import '../../node_modules//swiper/swiper.css';
 
+#carousel_login_modal.swiper {
+  height: 441px !important;
+  width: 100%;
+}
+
 @font-face {
   font-family: 'HelveticaNeue';
   src: url('./fonts/HelveticaNeue.ttf') format('truetype');
@@ -48,8 +53,10 @@
   --blanco-0: #fff;
   --gris-100: #eeeded;
   --gris-200: #bebebd;
+  --gris-250: #bdbdbd;
   --gris-300: #9b9a98;
   --gris-400: #777673;
+  --gris-450: #717171;
   --gris-500: #595955;
   --gris-600: #3b3a37;
   --gris-700: #1b1a16;

@@ -1,10 +1,10 @@
 //@ts-ignore
 import { Container, Input, Inputs, Password, Status, Button, Checkbox, ButtonSizes, ButtonStyles } from 'coppelar.components/index'
 import React, { useMemo } from 'react'
-import { useFormProvider } from '../../../checkout/src/contexts/form/FormProvider'
-import { LoginForm } from './login.types'
-import { useErrorInput } from '../../../checkout/src/hooks/useInputError'
-import bootstrap from '../../../shared/public/bootstrap.module.css'
+import { useFormProvider } from '../../../../checkout/src/contexts/form/FormProvider'
+import { LoginForm } from '../login.types'
+import { useErrorInput } from '../../../../checkout/src/hooks/useInputError'
+import bootstrap from '../../../../shared/public/bootstrap.module.css'
 
 export const Login = ({ goToMissingPass }: { goToMissingPass: () => void }) => {
   const { status, onChange, onStatus, form, values } = useFormProvider<LoginForm>()

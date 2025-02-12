@@ -10,16 +10,12 @@ interface ModalProps {
   children: React.ReactNode
 }
 
-export const Modal: React.FC<ModalProps> = ({ handleShow, subtitle, title = null, children }) => {
+export const Modal: React.FC<ModalProps> = ({ handleShow, children }) => {
   return (
     <>
       <div className={modal['cp-modal-background']}>
         <div className={modal['cp-modal']}>
-          <div className={modal['cp-modal-header']}>
-            <div className={modal.close}>{title && <h1>{title}</h1>}</div>
-            <SvgIcon name="close" stylesProps={{ width: '1.5rem', cursor: 'pointer' }} onClick={handleShow} />
-          </div>
-          {subtitle && <p>{subtitle}</p>}
+          <SvgIcon name="close" stylesProps={{ zIndex: '999', width: '1.5rem', cursor: 'pointer', right: '1.5rem', position: 'absolute' }} onClick={handleShow} />
           {children}
         </div>
       </div>

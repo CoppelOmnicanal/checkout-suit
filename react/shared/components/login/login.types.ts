@@ -3,3 +3,6 @@ export interface LoginForm {
   password: string
 }
 
+export interface RecoverPassword {
+  email: string
+}
