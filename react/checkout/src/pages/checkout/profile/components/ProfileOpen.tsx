@@ -14,9 +14,9 @@ import { useStepper } from '../../../../contexts/stepper'
 import { CheckoutSteps } from '../../../../types/stepper.types'
 import { useUpdateProfile } from '../../../../mutations/useUpdateProfile'
 import { Modal } from '../../../../../../shared/components/modal/Modal'
-import { Login } from '../../../../../../shared/components/login/Login'
 import { Profile } from './Profile'
 import { Billing } from './Bill/Billing'
+import { LoginCarousel } from '../../../../../../shared/components/login/LoginCarousel'
 
 export const ProfileOpen = ({ setForm }: { setForm: React.Dispatch<React.SetStateAction<ProfileForm>> }) => {
   const { values, status, setStatus } = useFormProvider<ProfileForm>()
@@ -93,7 +93,7 @@ export const ProfileOpen = ({ setForm }: { setForm: React.Dispatch<React.SetStat
     <>
       {modal && (
         <Modal handleShow={() => setModal(false)} title="¡Hola!" subtitle="Iniciá sesión para disfrutar de los beneficios de Coppel en línea">
-          <Login />
+          <LoginCarousel />
         </Modal>
       )}
 

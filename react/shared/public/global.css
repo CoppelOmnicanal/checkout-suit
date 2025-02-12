@@ -1,3 +1,5 @@
+@import '../../node_modules//swiper/swiper.css';
+
 @font-face {
   font-family: 'HelveticaNeue';
   src: url('./fonts/HelveticaNeue.ttf') format('truetype');

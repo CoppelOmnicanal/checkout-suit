@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { OrderFormProvider } from './contexts/orderform'
+//@ts-ignore
 import { useRuntime } from 'vtex.render-runtime'
 import { CartPage, CheckoutPage } from './pages'
 import { Hashes } from '../../shared/types/shared.types'
@@ -30,7 +31,7 @@ export const Checkout = () => {
       <OrderFormProvider>
         <AuthProvider>
           <StepsProvider>
-            <EventsContainer>{render[hash] ?? <CartPage />}</EventsContainer>
+            <EventsContainer>{render[hash] ?? <CheckoutPage />}</EventsContainer>
           </StepsProvider>
         </AuthProvider>
       </OrderFormProvider>

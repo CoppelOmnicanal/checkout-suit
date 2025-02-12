@@ -16,10 +16,8 @@ export const Modal: React.FC<ModalProps> = ({ handleShow, subtitle, title = null
       <div className={modal['cp-modal-background']}>
         <div className={modal['cp-modal']}>
           <div className={modal['cp-modal-header']}>
-            <div className={modal.close}>
-              {title && <h1>{title}</h1>}
-              <SvgIcon name="close" stylesProps={{ width: '1.5rem', cursor: 'pointer' }} onClick={handleShow} />
-            </div>
+            <div className={modal.close}>{title && <h1>{title}</h1>}</div>
+            <SvgIcon name="close" stylesProps={{ width: '1.5rem', cursor: 'pointer' }} onClick={handleShow} />
           </div>
           {subtitle && <p>{subtitle}</p>}
           {children}
