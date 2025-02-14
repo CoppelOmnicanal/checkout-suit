@@ -12,7 +12,7 @@ export interface ValidatePayload {
   password: string
 }
 
-export type AuthStatus = 'WrongCredentials' | 'Success' | 'BlockedUser'
+export type AuthStatus = 'WrongCredentials' | 'Success' | 'BlockedUser' | 'InvalidToken'
 
 export interface ValidateResponse {
   authStatus: AuthStatus

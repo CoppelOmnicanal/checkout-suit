@@ -1,11 +1,11 @@
-import React, { useMemo, useRef, useState } from 'react'
+//@ts-ignore
+import { useRuntime } from 'vtex.render-runtime'
+//@ts-ignore
+import { Modal, BottomSheet } from 'coppelar.components/index'
+import React, { useRef, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { LoginSlice } from './slices/LoginSlice'
 import { ChangePasswordSlice } from './slices/ChangePasswordSlice'
-import { Modal } from '../modal/Modal'
-//@ts-ignore
-import { useRuntime } from 'vtex.render-runtime'
-import { BottomSheet } from '../bottom-sheet/BottomSheet'
 
 export const Login = ({ handleShow }: { handleShow: () => void }) => {
   const swiperRef = useRef<any>(null)
@@ -21,7 +21,7 @@ export const Login = ({ handleShow }: { handleShow: () => void }) => {
     <>
       {modalActive && (
         <Modal handleShow={handleShow}>
-          {(hideModal) => {
+          {(hideModal: () => Promise<void>) => {
             const goToOTP = () => {
               if (deviceInfo.isMobile) {
                 hideModal()

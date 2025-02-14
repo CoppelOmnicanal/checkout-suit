@@ -8,10 +8,12 @@ import bootstrap from '../../../../shared/public/bootstrap.module.css'
 import { useAuth } from '../../../contexts/auth/AuthProvider'
 import { useOrderForm } from '../../../../checkout/src/contexts/orderform'
 import { ProfileForm } from '../../../../checkout/src/pages/checkout/profile'
+import { SalesChannel } from '../../../../checkout/src/types/orderform.types'
+import { ShippingPayload } from '../../../../checkout/src/types/shipping.types'
 
 export const LoginForm = ({ goToMissingPass }: { goToMissingPass: () => void }) => {
   const { status, onChange, onStatus, form, validate, values } = useFormProvider<LoginFormType>()
-  const { updateProfile } = useOrderForm()
+  const { updateProfile, orderForm, refreshSaleChannel, updateShipping } = useOrderForm()
   const { login } = useAuth()
   const [loading, setLoading] = useState<string | null>(null)
   const statusWrapper = useMemo(() => {
@@ -27,9 +29,9 @@ export const LoginForm = ({ goToMissingPass }: { goToMissingPass: () => void }) 
 
   const { errorType } = useErrorInput<LoginFormType>(values)
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    goToMissingPass()
-    /*
     event.preventDefault()
+
+    if (!orderForm) throw new Error('No orderForm')
 
     const onCharge = (percentage: number) => setLoading(`${percentage}%`)
     const isValid = validate()
@@ -40,13 +42,29 @@ export const LoginForm = ({ goToMissingPass }: { goToMissingPass: () => void }) 
     setLoading('0%')
     const result = await login(values, onCharge)
     if (result === 'BlockedUser') {
+      console.log('🚀 ~ onSubmit ~ result:', result)
+      setLoading(null)
+
       return
     }
 
     if (result === 'WrongCredentials') {
+      console.log('🚀 ~ onSubmit ~ result:', result)
+      setLoading(null)
+
+      return
+    }
+    
+    if (result === 'InvalidToken') {
+      console.log('🚀 ~ onSubmit ~ result:', result)
+      setLoading(null)
+
       return
     }
 
+    const { empleadocoppel } = result
+    const { salesChannel } = orderForm
+    const { COPPEL, CLIENT } = SalesChannel
     const payload: ProfileForm = {
       email: result.email,
       firstName: result.firstName,
@@ -60,7 +78,19 @@ export const LoginForm = ({ goToMissingPass }: { goToMissingPass: () => void }) 
 
     await updateProfile(payload)
     setLoading('50%')
-    */
+    if ((empleadocoppel && salesChannel === CLIENT) || (!empleadocoppel && salesChannel === COPPEL)) refreshSaleChannel(empleadocoppel ?? false, onCharge)
+    const emptyShipping: ShippingPayload = {
+      addressId: null,
+      address: null,
+      logisticsInfo: [],
+      clearAddressIfPostalCodeNotFound: false,
+      selectedAddresses: [],
+    }
+
+    setLoading('75%')
+    await updateShipping(emptyShipping)
+
+    setLoading('100%')
   }
 
   return (

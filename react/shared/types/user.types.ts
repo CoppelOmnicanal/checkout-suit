@@ -4,7 +4,7 @@ export interface User {
   coppelId: null
   documentCC: null
   email: string
-  empleadocoppel: null
+  empleadocoppel: boolean | null
   favoriteAddress: null
   favoriteCard: null
   firebase_id: null

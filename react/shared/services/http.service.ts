@@ -20,7 +20,7 @@ export class HttpMethods {
 
   async post<T, K>(endpoint: string, body: K, configuration?: AxiosRequestConfig): Promise<T> {
     try {
-      const response: AxiosResponse<T> = await axios.post(this.url + endpoint, body)
+      const response: AxiosResponse<T> = await axios.post(this.url + endpoint, body, configuration)
       return response.data
     } catch (error) {
       throw new Error('Unexpected Error')

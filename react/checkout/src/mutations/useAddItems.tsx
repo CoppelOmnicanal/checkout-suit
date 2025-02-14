@@ -27,5 +27,5 @@ export const useAddItems = (orderFormService: OrderFormApi) => {
     }
   }, [mutation])
 
-  return mutation.mutate
+  return mutation.mutateAsync 
 }

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useCallback, useContext, useEffect, useRef } from 'react'
 import { SingleProvider } from '../../../../shared'
 import { OrderFormContext, OrderFormContextType } from './OrderFormContext'
 import { useQuery } from '@tanstack/react-query'
@@ -6,40 +6,58 @@ import { OrderFormApi } from '../../api/orderform.api'
 import { HttpMethods } from '../../../../shared/services/http.service'
 import { CHO_VERSION } from '../../../../shared/types/shared.types'
 import { useSaveCustomData } from '../../mutations/useSaveCustomData'
-import { OrderForm, REFID_MAX_LENGTH } from '../../types/orderform.types'
+import { ItemsPayload, OrderForm, REFID_MAX_LENGTH, SalesChannel } from '../../types/orderform.types'
 import { COMERCIAL_CONDITIONS_SKU, CuotesGateway, Gateways } from '../../types/itemcontext.types'
 import { useCuotesModifiers } from '../../hooks/useCuotesModifier'
 import { useUpdateProfile } from '../../mutations/useUpdateProfile'
 import { ProfileForm } from '../../pages/checkout/profile'
+import { useAddItems } from '../../mutations/useAddItems'
+import { useUpdateShipping } from '../../mutations/useUpdateShipping'
+import { ShippingPayload } from '../../types/shipping.types'
 
 const OrderFormProvider: SingleProvider = ({ children }) => {
   const http = new HttpMethods('/api/checkout/pub/orderForm/')
   const orderFormService = new OrderFormApi(http)
+
   const updateProfileData = useUpdateProfile(orderFormService)
   const saveCustomData = useSaveCustomData(orderFormService)
+  const addItemsMutation = useAddItems(orderFormService)
+  const updateShippingMutation = useUpdateShipping(orderFormService)
+
   const { sanitize } = useCuotesModifiers()
-  //@ts-ignore
-  const { data: orderForm, error, isLoading } = useQuery(['orderForm'], () => orderFormService.getUpdatedOrderForm())
-  const {
-    data: cuotesModifiers,
-    error: modifiersError,
-    isLoading: modifiersLoading,
-  } = useQuery(['modifiers', orderForm?.orderFormId], () => modifiers(orderForm), {
-    enabled: !!orderForm, // Solo se ejecuta si hay un `orderForm`
-    staleTime: Infinity, // Los datos no se vuelven obsoletos nunca, evitando recargas innecesarias
-    cacheTime: Infinity, // Los datos permanecen en caché indefinidamente
-    refetchOnWindowFocus: false, // No vuelve a ejecutarse al volver a la ventana
-    refetchOnReconnect: false, // No vuelve a ejecutarse cuando el usuario se reconecta
-    retry: false, // Evita reintentos automáticos en caso de error
+  const { data: orderForm, isLoading } = useQuery(['orderForm'], () => orderFormService.getUpdatedOrderForm())
+  const { isLoading: modifiersLoading } = useQuery(['modifiers', orderForm?.orderFormId], () => modifiers(orderForm), {
+    enabled: !!orderForm,
+    staleTime: Infinity,
+    cacheTime: Infinity,
+    refetchOnReconnect: false,
+    retry: false,
   })
   const isFirstUpdate = useRef(true)
   const updateProfile = (form: ProfileForm) => updateProfileData({ form })
+  const addItems = (items: ItemsPayload[]) => addItemsMutation({ items })
+  const updateShipping = (shipping: ShippingPayload) => updateShippingMutation({ shipping })
 
-  /**
-   * Calcula UN modificador de cuotas y TODAS la promociones bancarias disponibles para un carrito de compras
-   * @param items
-   * @returns
-   */
+  const refreshSaleChannel = useCallback(
+    async (empleadocoppel: boolean, charge?: (percentage: number) => void) => {
+      if (!orderForm) throw new Error('no order form')
+
+      const { items, orderFormId } = orderForm
+      const itemsPayload: ItemsPayload[] = items.map((item, index) => ({
+        id: item.id,
+        index,
+        quantity: item.quantity,
+        seller: empleadocoppel ? SalesChannel.COPPEL : SalesChannel.CLIENT,
+      }))
+
+      await orderFormService.emptyCart(orderFormId)
+      if (charge) charge(55)
+
+      await addItems(itemsPayload)
+      if (charge) charge(65)
+    },
+    [orderForm],
+  )
 
   const modifiers = async (orderForm?: OrderForm) => {
     if (!orderForm) {
@@ -82,6 +100,7 @@ const OrderFormProvider: SingleProvider = ({ children }) => {
 
     const areEquals = payload.every((item) => items.some((cartItem) => `${item.id}` === cartItem.id))
 
+    console.log("🚀 ~ modifiers ~ areEquals:", areEquals)
     if (areEquals) {
       return
     }
@@ -89,7 +108,6 @@ const OrderFormProvider: SingleProvider = ({ children }) => {
     await orderFormService.emptyCart(orderForm.orderFormId)
     return await orderFormService.addItems(payload, orderForm.orderFormId)
   }
-
 
   useEffect(() => {
     if (orderForm && isFirstUpdate.current) {
@@ -113,14 +131,14 @@ const OrderFormProvider: SingleProvider = ({ children }) => {
     }
   }, [orderForm])
 
-  useEffect(() => console.log('🚀 ~ orderForm:', orderForm), [orderForm])
-
   const data: OrderFormContextType = {
     orderForm,
     orderFormLoading: isLoading,
     orderFormService,
     modifiersLoading,
-    updateProfile
+    updateProfile,
+    refreshSaleChannel,
+    updateShipping,
   }
 
   return <OrderFormContext.Provider value={data}>{children}</OrderFormContext.Provider>

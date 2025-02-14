@@ -3,6 +3,7 @@ import { LoginFormType } from '../components/login'
 import { HttpMethods } from '../services/http.service'
 import { StarProcessPayload, ValidatePayload, ValidateResponse } from '../types/auth.types'
 import { Session, User } from '../types/user.types'
+import { VTEXUser } from '../types/vtex-user.types'
 
 export class AuthApi {
   private http: HttpMethods
@@ -13,6 +14,11 @@ export class AuthApi {
 
   async getByEmail(email: string) {
     const user = await this.http.get<User[]>(`/_v/services/vtex/searchByEmail/${email}`)
+    return user
+  }
+
+  async getByEmailVTEX(email: string) {
+    const user = await this.http.get<VTEXUser>(`/api/checkout/pub/profiles?email=${email}`)
     return user
   }
 

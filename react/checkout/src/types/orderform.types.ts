@@ -1,6 +1,6 @@
 export interface OrderForm {
   orderFormId: string
-  salesChannel: string
+  salesChannel: SalesChannel
   loggedIn: boolean
   isCheckedIn: boolean
   storeId: null
@@ -34,6 +34,11 @@ export interface OrderForm {
   merchantContextData: null
   purchaseAgentsData: null
   itemsOrdination: null
+}
+
+export enum SalesChannel {
+  COPPEL = '2',
+  CLIENT = '1',
 }
 
 export interface MarketingData {

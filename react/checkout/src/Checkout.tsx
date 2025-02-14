@@ -28,13 +28,13 @@ export const Checkout = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <OrderFormProvider>
-        <AuthProvider>
+      <AuthProvider>
+        <OrderFormProvider>
           <StepsProvider>
             <EventsContainer>{render[hash] ?? <CheckoutPage />}</EventsContainer>
           </StepsProvider>
-        </AuthProvider>
-      </OrderFormProvider>
+        </OrderFormProvider>
+      </AuthProvider>
     </QueryClientProvider>
   )
 }
