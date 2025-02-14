@@ -18,7 +18,7 @@ const category = (item: AddToCartItem) => {
 }
 
 export const useGtm = () => {
-  const { getUserProfileByEmail } = useAuth()
+  const { authApi } = useAuth()
 
   const checkoutId = (section: GtmSections, orderFormId: string) => {
     const payload: CheckoutIdPayload = {
@@ -102,7 +102,7 @@ export const useGtm = () => {
     })
 
     const { email = null, firstName = null, lastName = null } = clientProfileData || {}
-    const user = await getUserProfileByEmail(email ?? '')
+    const [user] = await authApi.getByEmail(email ?? '')
     const hasRegistered = !!user
 
     const { address, logisticsInfo = null } = shippingData || {}

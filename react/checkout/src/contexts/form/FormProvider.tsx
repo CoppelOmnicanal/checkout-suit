@@ -3,7 +3,6 @@ import { Status } from 'coppelar.components/index'
 import React, { useContext, useState } from 'react'
 import { FormContext, FormContextType } from './FormContext'
 
-// Función para inicializar el estado de status
 const initializeStatus = <T extends Record<string, any>>(form: T): Record<keyof T, Status> => {
   return Object.keys(form).reduce(
     (acc, key) => {
@@ -33,6 +32,33 @@ export const FormProvider = <T extends Record<string, any>>({ children, form }: 
     }))
   }
 
+  const invalidate = () => {
+    const invalid = Object.entries(values).reduce(
+      (acc, current) => {
+        const key = current[0] as keyof T
+        const { INVALID, NORMAL } = Status
+
+        acc[key] = status[key] === NORMAL ? INVALID : status[key]
+        return acc
+      },
+      {} as Record<keyof T, Status>,
+    )
+
+    setStatus((prev) => ({
+      ...prev,
+      ...invalid,
+    }))
+  }
+
+  const validate = () => {
+    const isValid = Object.values(status).every((status) => status === Status.VALID)
+    if (!isValid) {
+      invalidate()
+    }
+
+    return isValid
+  }
+
   return (
     <FormContext.Provider
       value={{
@@ -44,7 +70,9 @@ export const FormProvider = <T extends Record<string, any>>({ children, form }: 
         setStatus,
         form,
         setLoadingForm,
-        loadingForm
+        loadingForm,
+        invalidate,
+        validate
       }}
     >
       {children}

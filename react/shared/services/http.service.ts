@@ -1,5 +1,5 @@
 import { axiosWrapper as axios } from '../config/axios.config'
-import { AxiosResponse } from 'axios'
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 export class HttpMethods {
   protected url: string = ''
@@ -18,7 +18,7 @@ export class HttpMethods {
     }
   }
 
-  async post<T, K>(endpoint: string, body: K): Promise<T> {
+  async post<T, K>(endpoint: string, body: K, configuration?: AxiosRequestConfig): Promise<T> {
     try {
       const response: AxiosResponse<T> = await axios.post(this.url + endpoint, body)
       return response.data
@@ -27,12 +27,17 @@ export class HttpMethods {
     }
   }
 
+  async postEncoded<T, K>(endpoint: string, body: K): Promise<T> {
+    const headers = { ...axios.defaults.headers.common, 'Content-Type': 'application/x-www-form-urlencoded' }
+    return this.post<T, K>(endpoint, body, { headers })
+  }
+
   async put<T, K>(endpoint: string, body: K): Promise<T> {
     try {
       const response: AxiosResponse<T> = await axios.put(this.url + endpoint, body)
       return response.data
     } catch (error) {
-      console.log("🚀 ~ HttpMethods ~ error:", error)
+      console.log('🚀 ~ HttpMethods ~ error:', error)
       throw new Error('Unexpected Error')
     }
   }

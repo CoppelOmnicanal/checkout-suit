@@ -1,37 +1,42 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { SingleProvider } from '../../types'
 import { AuthContext, AuthContextType } from './AuthContext'
 import { HttpMethods } from '../../services/http.service'
 import { AuthApi } from '../../api/auth.api'
+import { LoginFormType } from '../../components/login'
 
 const AuthProvider: SingleProvider = ({ children }) => {
   const http = new HttpMethods()
-  const authApi = new AuthApi(http)
+  const api = new AuthApi(http)
+  const [userLogged, setUserLogged] = useState(false)
 
-  const getUserProfileByEmail = async (email: string) => {
-    if (!email) {
-      return null
+  const login = async (data: LoginFormType, charge: (percentage: number) => void) => {
+    const { email } = data
+    charge(5)
+
+    if (userLogged) {
+      charge(10)
+      await api.logout()
     }
 
-    try {
-      const [user] = await authApi.getByEmail(email)
-      if (user) {
-        return user
-      }
-    } catch (error) {
-      console.log('🚀 ~ getUserProfileByEmail ~ error:', error)
-    }
-    return null
-  }
+    await api.startProcess(email)
+    const status = await api.validate(data)
+    charge(15)
 
-  const getSession = async () => {
-    const session = await authApi.getSession()
-    return session
+    if (status === 'Success') {
+      const [user] = await api.getByEmail(email)
+      setUserLogged(!!user)
+      charge(30)
+      return user
+    }
+
+    return status
   }
 
   const data: AuthContextType = {
-    getUserProfileByEmail,
-    getSession,
+    authApi: api,
+    setUserLogged,
+    login,
   }
 
   return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>

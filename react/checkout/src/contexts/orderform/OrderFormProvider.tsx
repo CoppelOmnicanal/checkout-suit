@@ -9,10 +9,13 @@ import { useSaveCustomData } from '../../mutations/useSaveCustomData'
 import { OrderForm, REFID_MAX_LENGTH } from '../../types/orderform.types'
 import { COMERCIAL_CONDITIONS_SKU, CuotesGateway, Gateways } from '../../types/itemcontext.types'
 import { useCuotesModifiers } from '../../hooks/useCuotesModifier'
+import { useUpdateProfile } from '../../mutations/useUpdateProfile'
+import { ProfileForm } from '../../pages/checkout/profile'
 
 const OrderFormProvider: SingleProvider = ({ children }) => {
   const http = new HttpMethods('/api/checkout/pub/orderForm/')
   const orderFormService = new OrderFormApi(http)
+  const updateProfileData = useUpdateProfile(orderFormService)
   const saveCustomData = useSaveCustomData(orderFormService)
   const { sanitize } = useCuotesModifiers()
   //@ts-ignore
@@ -30,6 +33,7 @@ const OrderFormProvider: SingleProvider = ({ children }) => {
     retry: false, // Evita reintentos automáticos en caso de error
   })
   const isFirstUpdate = useRef(true)
+  const updateProfile = (form: ProfileForm) => updateProfileData({ form })
 
   /**
    * Calcula UN modificador de cuotas y TODAS la promociones bancarias disponibles para un carrito de compras
@@ -86,6 +90,7 @@ const OrderFormProvider: SingleProvider = ({ children }) => {
     return await orderFormService.addItems(payload, orderForm.orderFormId)
   }
 
+
   useEffect(() => {
     if (orderForm && isFirstUpdate.current) {
       isFirstUpdate.current = false
@@ -115,6 +120,7 @@ const OrderFormProvider: SingleProvider = ({ children }) => {
     orderFormLoading: isLoading,
     orderFormService,
     modifiersLoading,
+    updateProfile
   }
 
   return <OrderFormContext.Provider value={data}>{children}</OrderFormContext.Provider>

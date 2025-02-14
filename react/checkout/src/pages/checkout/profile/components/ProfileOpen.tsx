@@ -12,23 +12,19 @@ import { useOrderForm } from '../../../../contexts/orderform'
 import { useEmarsys } from '../../../../../../shared/hooks/useEmarsys'
 import { useStepper } from '../../../../contexts/stepper'
 import { CheckoutSteps } from '../../../../types/stepper.types'
-import { useUpdateProfile } from '../../../../mutations/useUpdateProfile'
-import { Modal } from '../../../../../../shared/components/modal/Modal'
 import { Profile } from './Profile'
 import { Billing } from './Bill/Billing'
-import { LoginCarousel } from '../../../../../../shared/components/login/LoginCarousel'
+import { Login } from '../../../../../../shared/components/login/'
 
 export const ProfileOpen = ({ setForm }: { setForm: React.Dispatch<React.SetStateAction<ProfileForm>> }) => {
-  const { values, status, setStatus } = useFormProvider<ProfileForm>()
-  const { orderForm, orderFormService } = useOrderForm()
-  const updatProfile = useUpdateProfile(orderFormService)
+  const { values, status, setStatus, invalidate } = useFormProvider<ProfileForm>()
+  const { orderForm, updateProfile } = useOrderForm()
   const { checkoutId, cartLoaded } = useGtm()
   const { setEmail, cart, go } = useEmarsys()
   const { doneStep } = useStepper()
   const [modal, setModal] = useState(false)
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    event.stopPropagation()
 
     const { VALID, INVALID } = Status
     const { isCorporate, corporateDocument, corporateName, ...fields } = status
@@ -45,31 +41,15 @@ export const ProfileOpen = ({ setForm }: { setForm: React.Dispatch<React.SetStat
     }
 
     const isValid = Object.values(fields).every((status) => status === Status.VALID) && billing === VALID
-
     if (!isValid) {
-      const invalid = Object.entries(values).reduce(
-        (acc, current) => {
-          const key = current[0] as keyof ProfileForm
-          const { INVALID, NORMAL } = Status
-
-          acc[key] = status[key] === NORMAL ? INVALID : status[key]
-          return acc
-        },
-        {} as Record<keyof ProfileForm, Status>,
-      )
-
-      setStatus((prev) => ({
-        ...prev,
-        ...invalid,
-      }))
-
+      invalidate()
       return
     }
 
     values['corporateName'] = !values['isCorporate'] || values['corporateName'] === '' ? null : values['corporateName']
     values['corporateDocument'] = !values['isCorporate'] || values['corporateDocument'] === '' ? null : values['corporateDocument']
 
-    updatProfile({ form: values })
+    updateProfile(values)
     setForm(values)
     doneStep(CheckoutSteps.PROFILE)
   }
@@ -91,11 +71,7 @@ export const ProfileOpen = ({ setForm }: { setForm: React.Dispatch<React.SetStat
 
   return (
     <>
-      {modal && (
-        <Modal handleShow={() => setModal(false)} title="¡Hola!" subtitle="Iniciá sesión para disfrutar de los beneficios de Coppel en línea">
-          <LoginCarousel />
-        </Modal>
-      )}
+      {modal && <Login handleShow={() => setModal(false)} />}
 
       <form onSubmit={onSubmit} className={profileopen.form}>
         <div className={`${checkout['subtitle-1']} ${profileopen['subtitle-1']}`}>Completá el formulario</div>

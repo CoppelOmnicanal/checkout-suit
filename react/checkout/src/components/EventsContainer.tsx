@@ -7,7 +7,7 @@ import { Steps } from '../../../shared/types/masterdata.types'
 
 export const EventsContainer: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   const { orderForm } = useOrderForm()
-  const { getUserProfileByEmail, getSession } = useAuth()
+  const { authApi, setUserLogged } = useAuth()
   const [user, setUser] = useState<User | null>(null)
   const [session, setSession] = useState<Session | null>(null)
 
@@ -17,8 +17,9 @@ export const EventsContainer: React.FC<PropsWithChildren<{}>> = ({ children }) =
 
     const fetchData = async () => {
       try {
-        const [fetchedUser, fetchedSession] = await Promise.all([getUserProfileByEmail(email), getSession()])
-        setUser(fetchedUser)
+        const [[fetchedUser], fetchedSession] = await Promise.all([authApi.getByEmail(email), authApi.getSession()])
+        setUser(fetchedUser ?? null)
+        setUserLogged(!!fetchedUser)
         setSession(fetchedSession)
       } catch (error) {
         console.error('Error fetching user or session:', error)

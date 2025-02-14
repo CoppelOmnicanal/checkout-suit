@@ -30,12 +30,12 @@
   justify-content: space-between;
 }
 
-.cp-modal .close {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+.cp-modal .close > h1 {
+  margin: unset;
+}
+
+.cp-modal .close > p {
+  margin: unset;
 }
 
 .cp-modal > *:only-child {
@@ -61,9 +61,9 @@
 }
 
 .cp-modal {
-  animation: slideIn 0.3s ease-out;
+  animation: slideIn 0.2s ease-out;
 }
 
 .cp-modal.closing {
-  animation: slideOut 0.3s ease-in forwards; /* Usa ease-in para que se acelere al salir */
+  animation: slideOut 0.2s ease-in forwards; /* Usa ease-in para que se acelere al salir */
 }

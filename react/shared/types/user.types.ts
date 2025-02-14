@@ -37,7 +37,7 @@ export interface User {
   rclastsession: string
   rclastsessiondate: Date
   homePhone: string
-  phone: null
+  phone: string | null
   brandPurchasedTag: Tag
   brandVisitedTag: Tag
   categoryPurchasedTag: Tag
