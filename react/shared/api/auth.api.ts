@@ -45,7 +45,7 @@ export class AuthApi {
       user: email,
     }
 
-    this.http.postEncoded(url, payload)
+    await this.http.postEncoded(url, payload)
   }
 
   async validate(data: LoginFormType) {
