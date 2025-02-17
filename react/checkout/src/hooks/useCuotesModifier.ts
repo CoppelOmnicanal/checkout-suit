@@ -1,6 +1,6 @@
 import { MasterDataApi } from '../../../shared/api/masterdata.api'
 import { HttpMethods } from '../../../shared/services/http.service'
-import { COMERCIAL_CONDITIONS, ComercialCondition, CuotesGateway, ItemContext } from '../types/itemcontext.types'
+import { COMERCIAL_CONDITIONS, COMERCIAL_CONDITIONS_SKU, ComercialCondition, CuotesGateway, Gateways, ItemContext } from '../types/itemcontext.types'
 import { AddToCartItem } from '../types/orderform.types'
 
 export const useCuotesModifiers = () => {
@@ -12,7 +12,7 @@ export const useCuotesModifiers = () => {
 
     const availableConditions: ComercialCondition[] = []
     const availableCuotes: CuotesGateway[] = []
-    const promotions: Record<string, string[]> = {}
+    const availablePromotions: Record<string, string[]> = {}
     let index = 0
 
     for (const itemContext of contexts) {
@@ -25,16 +25,36 @@ export const useCuotesModifiers = () => {
       availableCuotes.push(COMERCIAL_CONDITIONS[CommercialConditionId].id)
       availableConditions.push(COMERCIAL_CONDITIONS[CommercialConditionId])
 
-      promotions[index] = []
-      promotions[`${index}`] = Object.values(ProductClusterNames)
+      availablePromotions[index] = []
+      availablePromotions[`${index}`] = Object.values(ProductClusterNames)
         .filter((value) => value.includes('--'))
         .map((element) => element.split('--')[0])
 
       index++
     }
 
-    return { availableConditions, availableCuotes, promotions }
+    return { availableConditions, availableCuotes, availablePromotions }
   }
 
-  return { sanitize }
+  const calcMinorCuote = (availableConditions: ComercialCondition[], availableCuotes: CuotesGateway[]) => {
+    const applicableCuotes = availableCuotes.map((cuote) => {
+      const element = availableConditions.find((gateway) => gateway.id === cuote)
+      if (!element) {
+        throw new Error('Invalid Cuote Gateway')
+      }
+
+      return Number(cuote.replace(element.gateway, ''))
+    })
+
+    const minorCuote = Math.min(...applicableCuotes)
+    const isSameGatewayForAll = availableConditions.every((comercialConditon) => comercialConditon.gateway === availableConditions[0].gateway)
+    const modifierCuotesGateway = isSameGatewayForAll ? minorCuote + availableConditions[0].gateway : minorCuote + Gateways.S
+    const cuotesModifier = COMERCIAL_CONDITIONS_SKU[modifierCuotesGateway as CuotesGateway]
+
+    return cuotesModifier
+  }
+
+  const calcPromotions = (promotions: Record<string, string[]>) => promotions['0'].filter((promotion) => Object.values(promotions).every((value) => value.includes(promotion)))
+
+  return { sanitize, calcMinorCuote, calcPromotions }
 }

@@ -1,5 +1,5 @@
 import { HttpMethods } from '../../../shared/services/http.service'
-import { AddToCartItem, ClientProfileData, ItemsPayload, OrderForm } from '../types/orderform.types'
+import { ClientProfileData, ItemsPayload, OrderForm } from '../types/orderform.types'
 import { ShippingPayload } from '../types/shipping.types'
 
 export class OrderFormApi {
@@ -39,7 +39,7 @@ export class OrderFormApi {
   }
 
   async updateShipping(orderFormId: string, shipping: ShippingPayload) {
-    const url = `/api/checkout/pub/orderForm/${orderFormId}/attachments/shippingData`
+    const url = `${orderFormId}/attachments/shippingData`
     const orderForm = await this.http.post<OrderForm, ShippingPayload>(url, shipping)
     return orderForm
   }

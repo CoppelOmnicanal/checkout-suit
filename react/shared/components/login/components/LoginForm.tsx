@@ -1,19 +1,21 @@
 //@ts-ignore
-import { Container, Input, Inputs, Password, Status, Button, Checkbox, ButtonSizes, ButtonStyles } from 'coppelar.components/index'
+import { Container, Input, Inputs, Password, Status, Button, ButtonSizes, ButtonStyles } from 'coppelar.components/index'
 import React, { useMemo, useState } from 'react'
 import { useFormProvider } from '../../../../checkout/src/contexts/form/FormProvider'
 import { LoginFormType } from '../login.types'
 import { useErrorInput } from '../../../../checkout/src/hooks/useInputError'
 import bootstrap from '../../../../shared/public/bootstrap.module.css'
 import { useAuth } from '../../../contexts/auth/AuthProvider'
-import { useOrderForm } from '../../../../checkout/src/contexts/orderform'
-import { ProfileForm } from '../../../../checkout/src/pages/checkout/profile'
-import { SalesChannel } from '../../../../checkout/src/types/orderform.types'
-import { ShippingPayload } from '../../../../checkout/src/types/shipping.types'
+import { useSyncOrderform } from '../../../../checkout/src/hooks/useSyncOrderform'
 
-export const LoginForm = ({ goToMissingPass }: { goToMissingPass: () => void }) => {
+interface LoginFormProps {
+  onSuccess: () => void
+  goToMissingPass: () => void
+}
+
+export const LoginForm: React.FC<LoginFormProps> = ({ goToMissingPass, onSuccess }) => {
   const { status, onChange, onStatus, form, validate, values } = useFormProvider<LoginFormType>()
-  const { updateProfile, orderForm, refreshSaleChannel, updateShipping } = useOrderForm()
+  const { syncCart, syncProfile, syncShipping } = useSyncOrderform()
   const { login } = useAuth()
   const [loading, setLoading] = useState<string | null>(null)
   const statusWrapper = useMemo(() => {
@@ -28,69 +30,56 @@ export const LoginForm = ({ goToMissingPass }: { goToMissingPass: () => void }) 
   }, [status])
 
   const { errorType } = useErrorInput<LoginFormType>(values)
+
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    if (!orderForm) throw new Error('No orderForm')
-
+    const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
     const onCharge = (percentage: number) => setLoading(`${percentage}%`)
     const isValid = validate()
     if (!isValid) {
+      setLoading(null)
       return
     }
 
     setLoading('0%')
-    const result = await login(values, onCharge)
-    if (result === 'BlockedUser') {
-      console.log('🚀 ~ onSubmit ~ result:', result)
+    await sleep(800)
+
+    try {
+      const result = await login(values, onCharge)
+      if (result === 'BlockedUser') {
+        console.log('🚀 ~ onSubmit ~ result:', result)
+        setLoading(null)
+
+        return
+      }
+
+      if (result === 'WrongCredentials') {
+        console.log('🚀 ~ onSubmit ~ result:', result)
+        setLoading(null)
+
+        return
+      }
+
+      if (result === 'InvalidToken') {
+        console.log('🚀 ~ onSubmit ~ result:', result)
+        setLoading(null)
+
+        return
+      }
+
+      await syncProfile(result)
+      setLoading('50%')
+      await syncCart(result, onCharge)
+
+      setLoading('75%')
+      await syncShipping()
+      setLoading('100%')
+
+      onSuccess()
+    } catch (error) {
       setLoading(null)
-
-      return
     }
-
-    if (result === 'WrongCredentials') {
-      console.log('🚀 ~ onSubmit ~ result:', result)
-      setLoading(null)
-
-      return
-    }
-    
-    if (result === 'InvalidToken') {
-      console.log('🚀 ~ onSubmit ~ result:', result)
-      setLoading(null)
-
-      return
-    }
-
-    const { empleadocoppel } = result
-    const { salesChannel } = orderForm
-    const { COPPEL, CLIENT } = SalesChannel
-    const payload: ProfileForm = {
-      email: result.email,
-      firstName: result.firstName,
-      lastName: result.lastName,
-      document: result.document,
-      phone: result?.phone ?? '',
-      corporateName: result.corporateName,
-      corporateDocument: result.corporateDocument,
-      isCorporate: result.isCorporate,
-    }
-
-    await updateProfile(payload)
-    setLoading('50%')
-    if ((empleadocoppel && salesChannel === CLIENT) || (!empleadocoppel && salesChannel === COPPEL)) refreshSaleChannel(empleadocoppel ?? false, onCharge)
-    const emptyShipping: ShippingPayload = {
-      addressId: null,
-      address: null,
-      logisticsInfo: [],
-      clearAddressIfPostalCodeNotFound: false,
-      selectedAddresses: [],
-    }
-
-    setLoading('75%')
-    await updateShipping(emptyShipping)
-
-    setLoading('100%')
   }
 
   return (
@@ -131,7 +120,14 @@ export const LoginForm = ({ goToMissingPass }: { goToMissingPass: () => void }) 
             </div>
           </div>
 
-          <Button text={loading ? 'Iniciando sesion' : 'Iniciar Sesion'} submit={true} size={ButtonSizes.Fijo} loadingPercentage={loading} />
+          <Button
+            text={loading ? 'Iniciando sesion' : 'Iniciar Sesion'}
+            disabled={loading}
+            submit={true}
+            size={ButtonSizes.Fijo}
+            loadingPercentage={loading}
+            styleProps={loading ? { color: '#fff' } : {}}
+          />
         </div>
       </form>
     </>

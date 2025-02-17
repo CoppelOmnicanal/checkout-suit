@@ -17,11 +17,12 @@ export interface ProfileForm
 
 export const ProfileContainer = () => {
   const { orderForm } = useOrderForm()
-  
+
   if (!orderForm) {
     return <>Skeleton</>
   }
 
+  const [isFirstRender, setIsFirstRender] = useState(true)
   const { steps, openStep } = useStepper()
   const { clientProfileData } = orderForm
   const initialData: ProfileForm = useMemo(
@@ -55,6 +56,24 @@ export const ProfileContainer = () => {
     const initialRender = Object.values(steps).every((step) => step === StepsStates.CLOSED)
     if (!initialRender) setDisplay(steps[CheckoutSteps.PROFILE])
   }, [steps])
+
+  useEffect(() => {
+    console.log('🚀 ~ ProfileContainer ~ clientProfileData:', clientProfileData)
+    if (!isFirstRender) {
+      setForm({
+        email: clientProfileData?.email ?? '',
+        firstName: clientProfileData?.firstName ?? '',
+        lastName: clientProfileData?.lastName ?? '',
+        document: clientProfileData?.document ?? '',
+        phone: clientProfileData?.phone ?? '',
+        corporateName: clientProfileData?.corporateName ?? '',
+        corporateDocument: clientProfileData?.corporateDocument ?? '',
+        isCorporate: clientProfileData?.isCorporate ?? false,
+      })
+    } else {
+      setIsFirstRender(false)
+    }
+  }, [clientProfileData])
 
   return (
     <div id={CheckoutSteps.PROFILE.substring(1)}>

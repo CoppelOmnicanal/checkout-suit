@@ -9,12 +9,22 @@ import { ChangePasswordSlice } from './slices/ChangePasswordSlice'
 
 export const Login = ({ handleShow }: { handleShow: () => void }) => {
   const swiperRef = useRef<any>(null)
-  const { deviceInfo } = useRuntime()
+  const { deviceInfo, navigate } = useRuntime()
   const [modalActive, setModalActive] = useState(true)
   const [bottomSheetVisible, setBottomSheetVisible] = useState(false)
   const onHideBottomSheet = () => {
     setBottomSheetVisible(false)
     handleShow()
+  }
+
+  const onSuccessfulLogin = () => {
+    setTimeout(() => {
+      navigate({
+        to: '/superiorcheckout#profile',
+      })
+
+      handleShow()
+    }, 800)
   }
 
   return (
@@ -43,7 +53,7 @@ export const Login = ({ handleShow }: { handleShow: () => void }) => {
                 onSwiper={(swiper) => (swiperRef.current = swiper)}
               >
                 <SwiperSlide>
-                  <LoginSlice />
+                  <LoginSlice onSuccess={onSuccessfulLogin} />
                 </SwiperSlide>
 
                 <SwiperSlide>

@@ -1,6 +1,6 @@
 //@ts-ignore
 import { Container, Input, Inputs, Phone, Button, ButtonStyles } from 'coppelar.components/index'
-import React from 'react'
+import React, { useEffect } from 'react'
 import checkout from '../../../../../../shared/public/checkout.module.css'
 import { useFormProvider } from '../../../../contexts/form/FormProvider'
 import { ProfileForm } from '..'
@@ -12,6 +12,11 @@ export const Profile = ({ setModal }: { setModal: React.Dispatch<React.SetStateA
   const changeProfile = (
     <Button style={ButtonStyles.Terciario} text={'Cambiar perfil'} onPress={() => setModal(true)} styleProps={{ padding: 'unset', fontWeight: 700 }} />
   )
+
+  useEffect(() => {
+    console.log('🚀 ~ Profile ~ form:', form)
+  }, [form])
+
   return (
     <>
       <Container inputType={errorType('email', Inputs.Mail)} label="Correo electrónico*" status={status['email']} disabled={!!form.email} button={changeProfile}>

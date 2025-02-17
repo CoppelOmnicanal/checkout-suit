@@ -7,7 +7,6 @@ import { HttpMethods } from '../../../../shared/services/http.service'
 import { CHO_VERSION } from '../../../../shared/types/shared.types'
 import { useSaveCustomData } from '../../mutations/useSaveCustomData'
 import { ItemsPayload, OrderForm, REFID_MAX_LENGTH, SalesChannel } from '../../types/orderform.types'
-import { COMERCIAL_CONDITIONS_SKU, CuotesGateway, Gateways } from '../../types/itemcontext.types'
 import { useCuotesModifiers } from '../../hooks/useCuotesModifier'
 import { useUpdateProfile } from '../../mutations/useUpdateProfile'
 import { ProfileForm } from '../../pages/checkout/profile'
@@ -24,7 +23,7 @@ const OrderFormProvider: SingleProvider = ({ children }) => {
   const addItemsMutation = useAddItems(orderFormService)
   const updateShippingMutation = useUpdateShipping(orderFormService)
 
-  const { sanitize } = useCuotesModifiers()
+  const { sanitize, calcMinorCuote, calcPromotions } = useCuotesModifiers()
   const { data: orderForm, isLoading } = useQuery(['orderForm'], () => orderFormService.getUpdatedOrderForm())
   const { isLoading: modifiersLoading } = useQuery(['modifiers', orderForm?.orderFormId], () => modifiers(orderForm), {
     enabled: !!orderForm,
@@ -60,34 +59,13 @@ const OrderFormProvider: SingleProvider = ({ children }) => {
   )
 
   const modifiers = async (orderForm?: OrderForm) => {
-    if (!orderForm) {
-      return
-    }
+    if (!orderForm || orderForm.items.length < 1) return
 
     const { items } = orderForm
-    if (items.length < 1) {
-      return
-    }
-
     const sanitizedItems = items.filter((item) => item.refId.length !== REFID_MAX_LENGTH)
-    const { availableConditions, availableCuotes, promotions } = await sanitize(sanitizedItems)
-
-    const applicableCuotes = availableCuotes.map((cuote) => {
-      const element = availableConditions.find((gateway) => gateway.id === cuote)
-      if (!element) {
-        throw new Error('Invalid Cuote Gateway')
-      }
-
-      return Number(cuote.replace(element.gateway, ''))
-    })
-
-    const minorCuote = Math.min(...applicableCuotes)
-    const isSameGatewayForAll = availableConditions.every((comercialConditon) => comercialConditon.gateway === availableConditions[0].gateway)
-    const modifierCuotesGateway = isSameGatewayForAll ? minorCuote + availableConditions[0].gateway : minorCuote + Gateways.S
-
-    const cuotesModifier = COMERCIAL_CONDITIONS_SKU[modifierCuotesGateway as CuotesGateway]
-    const applicablePromotions = promotions['0'].filter((promotion) => Object.values(promotions).every((value) => value.includes(promotion)))
-
+    const { availableConditions, availableCuotes, availablePromotions } = await sanitize(sanitizedItems)
+    const cuote = calcMinorCuote(availableConditions, availableCuotes)
+    const promotions = calcPromotions(availablePromotions)
     const payload = sanitizedItems.map((item, index) => ({
       id: item.id,
       quantity: item.quantity,
@@ -95,12 +73,11 @@ const OrderFormProvider: SingleProvider = ({ children }) => {
       index,
     }))
 
-    payload.push({ id: cuotesModifier, quantity: 1, seller: payload[0].seller, index: payload.length })
-    applicablePromotions.forEach((promotion) => payload.push({ id: promotion, quantity: 1, seller: payload[0].seller, index: payload.length }))
+    payload.push({ id: cuote, quantity: 1, seller: payload[0].seller, index: payload.length })
+    promotions.forEach((promotion) => payload.push({ id: promotion, quantity: 1, seller: payload[0].seller, index: payload.length }))
 
     const areEquals = payload.every((item) => items.some((cartItem) => `${item.id}` === cartItem.id))
 
-    console.log("🚀 ~ modifiers ~ areEquals:", areEquals)
     if (areEquals) {
       return
     }

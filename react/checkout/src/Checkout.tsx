@@ -31,7 +31,7 @@ export const Checkout = () => {
       <AuthProvider>
         <OrderFormProvider>
           <StepsProvider>
-            <EventsContainer>{render[hash] ?? <CheckoutPage />}</EventsContainer>
+            <EventsContainer>{render[hash] ?? <CartPage />}</EventsContainer>
           </StepsProvider>
         </OrderFormProvider>
       </AuthProvider>

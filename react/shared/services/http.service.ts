@@ -23,13 +23,15 @@ export class HttpMethods {
       const response: AxiosResponse<T> = await axios.post(this.url + endpoint, body, configuration)
       return response.data
     } catch (error) {
+      console.log("🚀 ~ HttpMethods ~ error:", error)
       throw new Error('Unexpected Error')
     }
   }
 
   async postEncoded<T, K>(endpoint: string, body: K): Promise<T> {
     const headers = { ...axios.defaults.headers.common, 'Content-Type': 'application/x-www-form-urlencoded' }
-    return this.post<T, K>(endpoint, body, { headers })
+    const payload = new URLSearchParams(body as Record<string, any>).toString()
+    return this.post<T, string>(endpoint, payload, { headers })
   }
 
   async put<T, K>(endpoint: string, body: K): Promise<T> {
